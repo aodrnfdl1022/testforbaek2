@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>서비스디자인연구실 | KIT</title>
+
+  <!-- Fonts: 독특한 Display + 깔끔한 KR -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700;800&family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================
+       THEME TOKENS
+       ========================== */
+    :root{
+      --font-display: "Unbounded", system-ui, sans-serif;
+      --font-body: "IBM Plex Sans KR", system-ui, sans-serif;
+
+      /* brand (로고 핑크 기반 + 라임/코발트로 개성) */
+      --a1: #ff4fbf;   /* opal pink */
+      --a2: #b7ff2a;   /* neon lime */
+      --a3: #2a5bff;   /* cobalt */
+      --a4: #00e5ff;   /* cyan */
+
+      /* light */
+      --bg: #fbfbff;
+      --panel: rgba(255,255,255,.78);
+      --panel-2: rgba(255,255,255,.62);
+      --ink: #0b0a12;
+      --text: rgba(11,10,18,.88);
+      --muted: rgba(11,10,18,.58);
+      --line: rgba(11,10,18,.10);
+      --shadow-sm: 0 10px 24px rgba(10,10,22,.08);
+      --shadow-md: 0 18px 55px rgba(10,10,22,.12);
+      --shadow-lg: 0 35px 95px rgba(10,10,22,.16);
+
+      --r-xl: 30px;
+      --r-lg: 22px;
+      --r-md: 16px;
+
+      --container: 1220px;
+      --pad-x: clamp(1.1rem, 4vw, 3.2rem);
+    }
+
+    /* dark mode overrides */
+    body[data-theme="dark"]{
+      --bg: #070713;
+      --panel: rgba(18,18,30,.70);
+      --panel-2: rgba(18,18,30,.52);
+      --ink: #f4f4ff;
+      --text: rgba(244,244,255,.90);
+      --muted: rgba(244,244,255,.60);
+      --line: rgba(244,244,255,.12);
+      --shadow-sm: 0 10px 30px rgba(0,0,0,.35);
+      --shadow-md: 0 18px 70px rgba(0,0,0,.45);
+      --shadow-lg: 0 40px 110px rgba(0,0,0,.55);
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family: var(--font-body);
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.7;
+      overflow-x:hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    a{ color:inherit; }
+    img{ display:block; }
+    ::selection{ background: rgba(255,79,191,.22); }
+
+    .container{
+      width:min(var(--container), calc(100% - (var(--pad-x) * 2)));
+      margin:0 auto;
+    }
+
+    /* ==========================
+       NAV (심플 + 토글 + 액티브)
+       ========================== */
+    nav{
+      position:fixed;
+      top:0; left:0; right:0;
+      z-index:1000;
+      padding: 14px var(--pad-x);
+      background: transparent;
+      transition: background .22s ease, border-color .22s ease;
+    }
+    nav.scrolled{
+      background: color-mix(in oklab, var(--panel) 78%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner{
+      width:min(var(--container), calc(100% - (var(--pad-x) * 0)));
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+    }
+
+    .nav-brand{
+      display:flex;
+      align-items:center;
+      gap:.85rem;
+      text-decoration:none;
+      min-width: 240px;
+    }
+    .nav-brand img{ height: 28px; width:auto; }
+    .brand-text{ display:flex; flex-direction:column; line-height:1.1; }
+    .brand-top{
+      font-size:.72rem;
+      color: var(--muted);
+      font-weight:600;
+      letter-spacing:.2px;
+    }
+    .brand-main{
+      font-family: var(--font-display);
+      font-size:.92rem;
+      font-weight:700;
+      letter-spacing:-0.6px;
+      color: var(--ink);
+    }
+
+    .nav-right{
+      display:flex;
+      align-items:center;
+      gap: 1.1rem;
+    }
+    .nav-links{
+      list-style:none;
+      display:flex;
+      gap: 1.4rem;
+      align-items:center;
+    }
+    .nav-links a{
+      text-decoration:none;
+      font-family: var(--font-display);
+      font-weight:700;
+      font-size:.82rem;
+      letter-spacing:-0.4px;
+      color: color-mix(in oklab, var(--ink) 70%, transparent);
+      position:relative;
+      padding: .35rem 0;
+      transition: color .2s ease;
+    }
+    .nav-links a::after{
+      content:"";
+      position:absolute;
+      left:0; bottom:-2px;
+      width:0%;
+      height:2px;
+      background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
+      transition: width .25s ease;
+    }
+    .nav-links a:hover{ color: var(--ink); }
+    .nav-links a:hover::after{ width:100%; }
+    .nav-links a.active{ color: var(--ink); }
+    .nav-links a.active::after{ width:100%; }
+
+    .theme-btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      padding: .55rem .85rem;
+      border-radius: 999px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight:700;
+      font-size:.78rem;
+      letter-spacing:-0.35px;
+      transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+      user-select:none;
+    }
+    .theme-btn:hover{
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+      border-color: color-mix(in oklab, var(--a1) 28%, var(--line));
+    }
+    .theme-btn svg{ width:18px; height:18px; }
+
+    @media (max-width: 860px){
+      .nav-links{ display:none; }
+    }
+
+    /* ==========================
+       REVEAL
+       ========================== */
+    .reveal{
+      opacity:0;
+      transform: translateY(16px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.active{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* ==========================
+       SECTION SEPARATION (4개 완전 분리)
+       ========================== */
+    .section{
+      padding: clamp(4.6rem, 8vw, 7.2rem) 0;
+      position:relative;
+      isolation:isolate;
+    }
+
+    .section--hero{
+      padding-top: 112px;
+      padding-bottom: clamp(3.2rem, 6vw, 5.2rem);
+      background:
+        radial-gradient(1200px 700px at 78% -10%, color-mix(in oklab, var(--a1) 28%, transparent), transparent 60%),
+        radial-gradient(1000px 650px at 10% 20%, color-mix(in oklab, var(--a3) 18%, transparent), transparent 60%),
+        radial-gradient(900px 650px at 88% 75%, color-mix(in oklab, var(--a2) 14%, transparent), transparent 55%);
+    }
+
+    .section--about{
+      background:
+        linear-gradient(180deg,
+          color-mix(in oklab, var(--panel) 40%, transparent),
+          transparent 60%),
+        radial-gradient(900px 500px at 12% 20%, color-mix(in oklab, var(--a4) 10%, transparent), transparent 60%);
+      border-top: 1px solid var(--line);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section--projects{
+      background:
+        radial-gradient(1000px 650px at 90% 20%, color-mix(in oklab, var(--a3) 14%, transparent), transparent 60%),
+        radial-gradient(900px 600px at 10% 75%, color-mix(in oklab, var(--a1) 12%, transparent), transparent 60%),
+        linear-gradient(180deg,
+          color-mix(in oklab, var(--panel) 26%, transparent),
+          transparent 70%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section--contact{
+      background:
+        radial-gradient(900px 600px at 15% 10%, color-mix(in oklab, var(--a2) 10%, transparent), transparent 60%),
+        radial-gradient(900px 600px at 85% 85%, color-mix(in oklab, var(--a1) 10%, transparent), transparent 60%),
+        linear-gradient(180deg, transparent, color-mix(in oklab, var(--panel) 20%, transparent));
+    }
+
+    /* ==========================
+       TITLE BAR (요구: About Lab 제목바)
+       + Projects/Contact도 동일 컴포넌트로 깔끔하게
+       ========================== */
+    .titlebar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      margin-bottom: clamp(1.6rem, 3.2vw, 2.8rem);
+    }
+    .bar-left{
+      display:flex;
+      flex-direction:column;
+      gap: .5rem;
+    }
+    .bar-label{
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      font-family: var(--font-display);
+      font-weight:800;
+      font-size:.78rem;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .bar-label::before{
+      content:"";
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      background: conic-gradient(from 220deg, var(--a1), var(--a2), var(--a3), var(--a1));
+      box-shadow: 0 0 0 5px color-mix(in oklab, var(--a1) 12%, transparent);
+    }
+    .bar-title{
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: -1.4px;
+      line-height: 1.05;
+      color: var(--ink);
+      font-size: clamp(2rem, 3.8vw, 3rem);
+    }
+    .bar-title .kr{
+      display:inline-block;
+      background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    .bar-title .en{
+      display:inline-block;
+      margin-left: .5rem;
+      font-size: .62em;
+      letter-spacing: -0.6px;
+      color: color-mix(in oklab, var(--ink) 52%, transparent);
+      font-weight: 700;
+    }
+
+    /* ==========================
+       HERO (완전 새 배치: 텍스트 + 인터랙티브 갤러리)
+       ========================== */
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: clamp(1.2rem, 4vw, 3.2rem);
+      align-items: start;
+    }
+
+    .hero-strip{
+      display:inline-flex;
+      align-items:center;
+      gap:.7rem;
+      padding: .62rem .95rem;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+      color: var(--muted);
+      font-weight:600;
+      font-size:.82rem;
+      flex-wrap:wrap;
+      margin-bottom: 1.25rem;
+    }
+    .strip-dot{
+      width: 9px; height: 9px;
+      border-radius: 999px;
+      background: conic-gradient(from 210deg, var(--a1), var(--a2), var(--a3), var(--a1));
+      box-shadow: 0 0 0 4px color-mix(in oklab, var(--a1) 12%, transparent);
+    }
+    .strip-sep{
+      width: 1px; height: 14px;
+      background: color-mix(in oklab, var(--ink) 20%, transparent);
+      opacity:.55;
+    }
+
+    .hero-title{
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: -2.6px;
+      line-height: .98;
+      color: var(--ink);
+      font-size: clamp(3.1rem, 6.4vw, 5.8rem);
+      margin-bottom: 1.15rem;
+    }
+    .hero-title .grad{
+      display:block;
+      background: linear-gradient(90deg, var(--a1), var(--a2), var(--a3));
+      background-size: 160% 160%;
+      -webkit-background-clip:text;
+      background-clip:text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap:.85rem;
+      flex-wrap:wrap;
+    }
+    .btn{
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size:.86rem;
+      letter-spacing:-0.25px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:.6rem;
+      padding: .95rem 1.15rem;
+      border-radius: 999px;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+      user-select:none;
+    }
+    .btn-primary{
+      color:#fff;
+      background: linear-gradient(135deg, color-mix(in oklab, var(--a1) 92%, black), color-mix(in oklab, var(--a3) 92%, black));
+      border: 1px solid color-mix(in oklab, white 18%, transparent);
+      box-shadow: 0 20px 55px color-mix(in oklab, var(--a1) 22%, transparent);
+    }
+    .btn-primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 30px 95px color-mix(in oklab, var(--a1) 28%, transparent);
+    }
+    .btn-ghost{
+      color: var(--ink);
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-ghost:hover{
+      transform: translateY(-2px);
+      border-color: color-mix(in oklab, var(--a1) 28%, var(--line));
+      box-shadow: var(--shadow-md);
+    }
+    .btn svg{ width:18px; height:18px; }
+
+    /* interactive gallery: 카드가 서로 겹치고 마우스에 따라 살짝 움직임 */
+    .hero-gallery{
+      position:relative;
+      height: 520px;
+      border-radius: var(--r-xl);
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-md);
+      overflow:hidden;
+      --px: 0px;
+      --py: 0px;
+    }
+    .hero-gallery::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      pointer-events:none;
+      background:
+        radial-gradient(700px 300px at 20% 0%, color-mix(in oklab, var(--a1) 18%, transparent), transparent 62%),
+        radial-gradient(700px 300px at 90% 90%, color-mix(in oklab, var(--a2) 14%, transparent), transparent 62%),
+        radial-gradient(700px 300px at 70% 20%, color-mix(in oklab, var(--a3) 12%, transparent), transparent 60%);
+      mix-blend-mode:multiply;
+      opacity:.9;
+    }
+
+    .stack{
+      position:absolute;
+      inset: 0;
+      padding: 18px;
+      display:block;
+      transform: translate(calc(var(--px) * .012), calc(var(--py) * .012));
+      transition: transform .12s ease;
+    }
+    .shot{
+      position:absolute;
+      border-radius: 26px;
+      overflow:hidden;
+      border: 1px solid color-mix(in oklab, var(--ink) 12%, transparent);
+      box-shadow: var(--shadow-lg);
+      transform: translateZ(0);
+      will-change: transform;
+      cursor:pointer;
+    }
+    .shot img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: saturate(1.12) contrast(1.05);
+      transform: scale(1.02);
+      transition: transform .55s ease, filter .35s ease;
+    }
+    .shot:hover img{
+      transform: scale(1.08);
+      filter: saturate(1.22) contrast(1.08);
+    }
+
+    /* bento-ish but overlapped */
+    .s1{ left: 18px; top: 18px; width: 62%; height: 58%; transform: rotate(-1.2deg) translate(calc(var(--px)*.010), calc(var(--py)*.010)); }
+    .s2{ right: 18px; top: 40px; width: 38%; height: 34%; transform: rotate(1.4deg) translate(calc(var(--px)*.014), calc(var(--py)*.012)); }
+    .s3{ right: 38px; bottom: 18px; width: 44%; height: 36%; transform: rotate(-.8deg) translate(calc(var(--px)*.012), calc(var(--py)*.015)); }
+    .s4{ left: 60px; bottom: 26px; width: 46%; height: 30%; transform: rotate(.9deg) translate(calc(var(--px)*.016), calc(var(--py)*.012)); }
+
+    @media (max-width: 1024px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .hero-gallery{ height: 420px; }
+    }
+    @media (max-width: 720px){
+      .hero-gallery{ height: 360px; }
+      .s1{ width: 72%; height: 56%; }
+      .s2{ width: 40%; }
+      .s3{ width: 52%; }
+      .s4{ width: 56%; left: 18px; }
+    }
+
+    /* ==========================
+       ABOUT (요구: 제목바 + 큰 굵은 문구 변경 + 텍스트 자연스럽게)
+       ========================== */
+    .about-card{
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--r-xl);
+      box-shadow: var(--shadow-md);
+      overflow:hidden;
+      position:relative;
+      padding: clamp(1.4rem, 2.8vw, 2.2rem);
+    }
+    .about-card::before{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 320px at 12% 0%, color-mix(in oklab, var(--a4) 12%, transparent), transparent 60%),
+        radial-gradient(900px 320px at 88% 100%, color-mix(in oklab, var(--a1) 16%, transparent), transparent 60%);
+      mix-blend-mode:multiply;
+      opacity:.85;
+    }
+    .about-inner{
+      position:relative;
+      z-index:1;
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: clamp(1.2rem, 3vw, 2.2rem);
+      align-items:start;
+    }
+
+    .about-hero{
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      color: var(--ink);
+      font-size: clamp(1.55rem, 2.5vw, 2.15rem);
+      line-height: 1.18;
+      margin-bottom: .9rem;
+    }
+    .about-hero .hl{
+      background: linear-gradient(90deg, color-mix(in oklab, var(--a1) 22%, transparent), color-mix(in oklab, var(--a2) 14%, transparent));
+      padding: 0 .35rem;
+      border-radius: .5rem;
+    }
+
+    .about-text{
+      color: color-mix(in oklab, var(--ink) 72%, transparent);
+      font-weight: 500;
+      font-size: 1.03rem;
+      line-height: 1.9;
+    }
+    .about-text p{ margin-bottom: .7rem; }
+    .about-text p:last-child{ margin-bottom: 0; }
+
+    /* 우측: 교수 카드(기존 기능 유지하면서 깔끔하게) */
+    .prof-card{
+      border-radius: 26px;
+      overflow:hidden;
+      border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--panel) 90%, transparent);
+      box-shadow: var(--shadow-lg);
+    }
+    .prof-img{
+      width:100%;
+      height: 320px;
+      object-fit: cover;
+      object-position: top;
+      filter: saturate(1.02) contrast(1.03);
+    }
+    .prof-body{
+      padding: 1.1rem 1.1rem 1.2rem;
+      display:flex;
+      flex-direction:column;
+      gap:.55rem;
+    }
+    .prof-body h3{
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing:-0.6px;
+      font-size: 1.05rem;
+      color: var(--ink);
+    }
+    .prof-body p{
+      color: var(--muted);
+      font-weight: 600;
+      font-size: .92rem;
+    }
+    .prof-link{
+      margin-top: .2rem;
+      display:inline-flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:.6rem;
+      padding: .8rem 1rem;
+      border-radius: 999px;
+      border: 1px solid color-mix(in oklab, var(--a1) 24%, var(--line));
+      background: linear-gradient(135deg, color-mix(in oklab, var(--a1) 10%, transparent), color-mix(in oklab, var(--a3) 8%, transparent));
+      text-decoration:none;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .86rem;
+      color: var(--ink);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+    .prof-link:hover{
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    @media (max-width: 1024px){
+      .about-inner{ grid-template-columns: 1fr; }
+      .prof-img{ height: 280px; }
+    }
+
+    /* ==========================
+       PROJECTS (요구: Recent Works + 프로젝트/Projects 강조 다르게 + 기능 추가)
+       기능: 필터칩 + 클릭 모달
+       ========================== */
+    .filter-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap: .55rem;
+      align-items:center;
+    }
+    .chip{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      padding: .52rem .85rem;
+      border-radius: 999px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      color: color-mix(in oklab, var(--ink) 72%, transparent);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .78rem;
+      letter-spacing:-0.35px;
+      transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease, background .16s ease;
+    }
+    .chip:hover{ transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .chip.is-active{
+      background: linear-gradient(135deg, color-mix(in oklab, var(--a2) 32%, transparent), color-mix(in oklab, var(--a1) 18%, transparent));
+      border-color: color-mix(in oklab, var(--a1) 28%, var(--line));
+      color: var(--ink);
+    }
+
+    .projects-grid{
+      margin-top: 1.35rem;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+    .proj{
+      grid-column: span 4;
+      border-radius: var(--r-xl);
+      overflow:hidden;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-md);
+      cursor:pointer;
+      position:relative;
+      transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease, opacity .2s ease;
+    }
+    .proj:hover{
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-lg);
+      border-color: color-mix(in oklab, var(--a1) 28%, var(--line));
+    }
+    .proj.feature{ grid-column: span 8; }
+
+    .proj-media{
+      height: 230px;
+      position:relative;
+      overflow:hidden;
+    }
+    .proj.feature .proj-media{ height: 330px; }
+
+    .proj-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: saturate(1.12) contrast(1.05);
+      transform: scale(1.02);
+      transition: transform .6s ease, filter .3s ease;
+    }
+    .proj:hover .proj-media img{
+      transform: scale(1.08);
+      filter: saturate(1.22) contrast(1.08);
+    }
+    .proj-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.62) 100%);
+      opacity:.9;
+      pointer-events:none;
+    }
+
+    .badge{
+      position:absolute;
+      top: 12px; left: 12px;
+      z-index:2;
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding: .42rem .65rem;
+      border-radius: 999px;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size:.78rem;
+      color: var(--ink);
+      background: color-mix(in oklab, var(--a2) 78%, white);
+      border: 1px solid color-mix(in oklab, white 20%, transparent);
+      box-shadow: 0 18px 45px color-mix(in oklab, var(--a2) 18%, transparent);
+    }
+
+    .proj-body{
+      padding: 1.15rem 1.15rem 1.25rem;
+      display:flex;
+      flex-direction:column;
+      gap:.45rem;
+    }
+    .title-kr{
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing:-0.7px;
+      color: var(--ink);
+      font-size: 1.06rem;
+      line-height:1.25;
+    }
+    .title-en{
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: .78rem;
+      letter-spacing: -0.2px;
+      color: color-mix(in oklab, var(--ink) 52%, transparent);
+      text-transform: uppercase;
+      margin-top: -2px;
+    }
+    .proj-desc{
+      color: color-mix(in oklab, var(--ink) 62%, transparent);
+      font-size: .95rem;
+      line-height: 1.65;
+      font-weight: 500;
+      margin-top: .2rem;
+    }
+
+    /* filtered state */
+    .proj.is-hidden{
+      opacity: 0;
+      pointer-events:none;
+      transform: translateY(8px);
+    }
+
+    @media (max-width: 1024px){
+      .proj{ grid-column: span 6; }
+      .proj.feature{ grid-column: span 12; }
+    }
+    @media (max-width: 720px){
+      .proj{ grid-column: span 12; }
+      .proj.feature .proj-media{ height: 240px; }
+    }
+
+    /* ==========================
+       MODAL (프로젝트 클릭하면 크게 보기)
+       ========================== */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      place-items:center;
+      z-index: 2000;
+      padding: 18px;
+    }
+    .modal.is-open{ display:grid; }
+    .modal-backdrop{
+      position:absolute;
+      inset:0;
+      background: rgba(0,0,0,.55);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .modal-panel{
+      position:relative;
+      width: min(980px, 100%);
+      border-radius: 26px;
+      overflow:hidden;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-lg);
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+    }
+    .modal-img{
+      min-height: 420px;
+      background: #000;
+    }
+    .modal-img img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      filter: saturate(1.12) contrast(1.05);
+    }
+    .modal-body{
+      padding: 1.25rem 1.25rem 1.35rem;
+      display:flex;
+      flex-direction:column;
+      gap:.7rem;
+    }
+    .modal-head{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:1rem;
+    }
+    .modal-body h3{
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing:-0.9px;
+      color: var(--ink);
+      font-size: 1.25rem;
+      line-height:1.2;
+    }
+    .modal-body .sub{
+      margin-top: .25rem;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: .82rem;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .modal-body .desc{
+      margin-top:.2rem;
+      color: color-mix(in oklab, var(--ink) 65%, transparent);
+      font-weight:500;
+      line-height:1.75;
+    }
+    .close-btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      display:grid;
+      place-items:center;
+      color: var(--ink);
+      transition: transform .18s ease, box-shadow .18s ease;
+      flex:0 0 auto;
+    }
+    .close-btn:hover{ transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+    .close-btn svg{ width:18px; height:18px; }
+
+    @media (max-width: 900px){
+      .modal-panel{ grid-template-columns: 1fr; }
+      .modal-img{ min-height: 260px; }
+    }
+
+    /* ==========================
+       CONTACT (요구: Contact + 찾아오시는 길, 컬러 지도, 아이콘 카드)
+       ========================== */
+    .contact-grid{
+      display:grid;
+      grid-template-columns: 1fr 460px;
+      gap: 14px;
+      align-items: stretch;
+    }
+    .map-wrap{
+      border-radius: var(--r-xl);
+      overflow:hidden;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-md);
+      min-height: 430px;
+      position:relative;
+    }
+    .map-wrap iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      filter: none; /* 컬러 */
+    }
+
+    .info-stack{
+      display:flex;
+      flex-direction:column;
+      gap: 12px;
+    }
+    .info-card{
+      border-radius: var(--r-xl);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow-md);
+      padding: 1.2rem 1.2rem;
+      display:flex;
+      gap: .9rem;
+      align-items:flex-start;
+    }
+    .ico{
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      display:grid;
+      place-items:center;
+      background: linear-gradient(135deg,
+        color-mix(in oklab, var(--a1) 16%, transparent),
+        color-mix(in oklab, var(--a3) 12%, transparent));
+      border: 1px solid var(--line);
+      flex: 0 0 auto;
+    }
+    .ico svg{ width: 20px; height: 20px; }
+    .info-label{
+      font-family: var(--font-display);
+      font-weight:800;
+      letter-spacing:-0.6px;
+      color: var(--ink);
+      font-size: .92rem;
+      margin-bottom: .25rem;
+    }
+    .info-value{
+      color: color-mix(in oklab, var(--ink) 68%, transparent);
+      font-weight:500;
+      line-height:1.7;
+      font-size: .98rem;
+    }
+    .mini-actions{
+      margin-top: .6rem;
+      display:flex;
+      gap:.5rem;
+      flex-wrap:wrap;
+    }
+    .mini-btn{
+      appearance:none;
+      border:none;
+      cursor:pointer;
+      padding: .5rem .75rem;
+      border-radius: 999px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .75rem;
+      transition: transform .16s ease, box-shadow .16s ease;
+      user-select:none;
+    }
+    .mini-btn:hover{ transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+    @media (max-width: 1024px){
+      .contact-grid{ grid-template-columns: 1fr; }
+      .map-wrap{ min-height: 360px; }
+    }
+
+    /* ==========================
+       FOOTER
+       ========================== */
+    footer{
+      padding: 1.8rem var(--pad-x);
+      border-top: 1px solid var(--line);
+      background: color-mix(in oklab, var(--panel) 70%, transparent);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+    .footer-inner{
+      width:min(var(--container), calc(100% - (var(--pad-x) * 2)));
+      margin:0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      flex-wrap:wrap;
+    }
+    .footer-brand{
+      display:flex;
+      align-items:center;
+      gap:.75rem;
+    }
+    .footer-brand img{ height: 22px; width:auto; }
+    .footer-brand span{
+      font-family: var(--font-display);
+      font-weight:700;
+      font-size:.92rem;
+      letter-spacing:-0.6px;
+      color: var(--ink);
+    }
+    footer p{
+      color: var(--muted);
+      font-size:.82rem;
+      font-weight:500;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAV -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <a class="nav-brand" href="#home">
+        <img src="../homeImg/01_kumoh_university_logo.png" alt="금오공과대학교">
+        <div class="brand-text">
+          <span class="brand-top">Kumoh National Institute of Technology</span>
+          <span class="brand-main">Service Design Lab</span>
+        </div>
+      </a>
+
+      <div class="nav-right">
+        <ul class="nav-links">
+          <li><a class="nav-a" href="#home">Home</a></li>
+          <li><a class="nav-a" href="#about">About</a></li>
+          <li><a class="nav-a" href="#projects">Projects</a></li>
+          <li><a class="nav-a" href="#contact">Contact</a></li>
+        </ul>
+
+        <!-- Dark mode toggle -->
+        <button class="theme-btn" id="themeBtn" type="button" aria-label="Toggle theme">
+          <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 3a7 7 0 1 0 9 9 9 9 0 0 1-9-9z"/>
+          </svg>
+          Theme
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="section section--hero" id="home">
+    <div class="container hero-grid">
+      <div class="reveal">
+        <div class="hero-strip">
+          <span class="strip-dot"></span>
+          <span>국립금오공과대학교</span>
+          <span class="strip-sep"></span>
+          <span>산업·빅데이터공학부 산업공학전공</span>
+          <span class="strip-sep"></span>
+          <span><b style="color:var(--ink);">서비스디자인연구실</b></span>
+        </div>
+
+        <h1 class="hero-title">
+          We Design
+          <span class="grad">the Invisible!</span>
+        </h1>
+
+        <!-- 설명 삭제(요구사항) -->
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            Go to Project
+          </a>
+          <a href="#about" class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Professor Profile
+          </a>
+        </div>
+      </div>
+
+      <!-- 새로운 인터랙티브 갤러리(텍스트 없음) -->
+      <div class="hero-gallery reveal" id="heroGallery" aria-label="Interactive gallery">
+        <div class="stack">
+          <div class="shot s1">
+            <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="project image 1">
+          </div>
+          <div class="shot s2">
+            <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="project image 2">
+          </div>
+          <div class="shot s3">
+            <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="project image 3">
+          </div>
+          <div class="shot s4">
+            <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="project image 4">
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ABOUT -->
+  <section class="section section--about" id="about">
+    <div class="container">
+      <!-- About Lab 제목바(요구사항) -->
+      <div class="titlebar reveal">
+        <div class="bar-left">
+          <div class="bar-label">About Lab</div>
+          <div class="bar-title"><span class="kr">About Lab</span><span class="en">Service Design Lab</span></div>
+        </div>
+      </div>
+
+      <div class="about-card reveal">
+        <div class="about-inner">
+          <div>
+            <!-- 큰 굵은 글씨 변경(요구사항) -->
+            <div class="about-hero">
+              <span class="hl">사용자 경험의</span><br>
+              새로운 가능성을 탐구합니다
+            </div>
+
+            <!-- 텍스트 자연스럽게 이어지도록 문단 정리 -->
+            <div class="about-text">
+              <p>
+                국립금오공과대학교 산업·빅데이터공학부 산업공학전공 소속의 <b>서비스디자인연구실</b>은
+                사용자의 관점에서 서비스 제공 과정을 체계적으로 설계하고,
+                다양한 이해관계자와의 협력을 통해 문제를 풀기 위해 노력하고 있습니다.
+              </p>
+              <p>
+                우리 연구실은 이론과 실무를 접목하여 사람들에게 더 나은 경험과 즐거움을 선사할 수 있는
+                서비스를 만들어가는 데 집중하고 있습니다.
+              </p>
+            </div>
+          </div>
+
+          <!-- 교수 카드(깔끔하게 유지) -->
+          <div class="prof-card">
+            <img src="../homeImg/02_professor_profile.png" alt="교수님" class="prof-img">
+            <div class="prof-body">
+              <h3>Professor Profile</h3>
+              <p>서비스디자인연구실 지도교수</p>
+              <a href="#" class="prof-link">
+                View More
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section section--projects" id="projects">
+    <div class="container">
+      <div class="titlebar reveal">
+        <div class="bar-left">
+          <!-- 요구: Recent Works 표시 -->
+          <div class="bar-label">Recent Works</div>
+          <!-- 요구: 한/영 타이틀 다르게 강조 -->
+          <div class="bar-title"><span class="kr">프로젝트</span><span class="en">Projects</span></div>
+        </div>
+
+        <!-- 기능: 필터 -->
+        <div class="filter-row" aria-label="Project filters">
+          <button class="chip is-active" data-filter="all" type="button">All</button>
+          <button class="chip" data-filter="2025" type="button">2025</button>
+          <button class="chip" data-filter="2024" type="button">2024</button>
+        </div>
+      </div>
+
+      <div class="projects-grid">
+        <!-- data-* 로 모달에 꽂아넣을 내용 -->
+        <article class="proj feature reveal"
+          data-year="2025"
+          data-title-kr="구미 2030 여성 포럼"
+          data-title-en="Gumi 2030 Women Forum"
+          data-desc="구미 2030 청년 여성들의 직접 참여와 소분과 모임 등을 통해 정책 수요자의 의견과 요구를 정성적으로 도출하여 청년 여성 정책 개발에 활용"
+          data-img="../homeImg/07_2025_gumi_2030_women_forum.png">
+          <div class="proj-media">
+            <span class="badge">2025</span>
+            <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="2025 구미 2030 여성 포럼">
+          </div>
+          <div class="proj-body">
+            <div class="title-kr">구미 2030 여성 포럼</div>
+            <div class="title-en">Gumi 2030 Women Forum</div>
+            <div class="proj-desc">구미 2030 청년 여성들의 직접 참여와 소분과 모임 등을 통해 정책 수요자의 의견과 요구를 정성적으로 도출하여 청년 여성 정책 개발에 활용</div>
+          </div>
+        </article>
+
+        <article class="proj reveal"
+          data-year="2024"
+          data-title-kr="구미 시민정책디자인단"
+          data-title-en="Citizen Policy Design"
+          data-desc="구미시의 저출생 극복을 위해 시민과 서비스 디자이너가 협력하여, 청년의 연애·결혼 포기와 경력 단절 문제를 중심으로 정책을 제안"
+          data-img="../homeImg/05_2024_gumi_citizen_policy_design.png">
+          <div class="proj-media">
+            <span class="badge">2024</span>
+            <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="2024 구미 시민정책디자인단">
+          </div>
+          <div class="proj-body">
+            <div class="title-kr">구미 시민정책디자인단</div>
+            <div class="title-en">Citizen Policy Design</div>
+            <div class="proj-desc">구미시의 저출생 극복을 위해 시민과 서비스 디자이너가 협력하여, 청년의 연애·결혼 포기와 경력 단절 문제를 중심으로 정책을 제안</div>
+          </div>
+        </article>
+
+        <article class="proj reveal"
+          data-year="2024"
+          data-title-kr="동북권 메타버스 창작자 경진대회"
+          data-title-en="Metaverse Creator Contest"
+          data-desc="공간 컴퓨팅 기반 공장 설비 가상 배치 서비스인 플로어비즈(FloorViz)를 개발 및 경북대산학협력단장상 수상"
+          data-img="../homeImg/06_2024_metaverse_floorviz.png">
+          <div class="proj-media">
+            <span class="badge">2024</span>
+            <img src="../homeImg/06_2024_metaverse_floorviz.png" alt="2024 동북권 메타버스 창작자 경진대회">
+          </div>
+          <div class="proj-body">
+            <div class="title-kr">동북권 메타버스 창작자 경진대회</div>
+            <div class="title-en">Metaverse Creator Contest</div>
+            <div class="proj-desc">공간 컴퓨팅 기반 공장 설비 가상 배치 서비스인 플로어비즈(FloorViz)를 개발 및 경북대산학협력단장상 수상</div>
+          </div>
+        </article>
+
+        <article class="proj reveal"
+          data-year="2024"
+          data-title-kr="구미 라면 축제"
+          data-title-en="Ramen Festival"
+          data-desc="2024 구미 라면축제에서 AR 및 VR을 활용한 라면 관련 콘텐츠를 개발하여 [스마트 플레이 큐브존]을 운영"
+          data-img="../homeImg/03_2024_gumi_ramen_festival.png">
+          <div class="proj-media">
+            <span class="badge">2024</span>
+            <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="2024 구미 라면 축제">
+          </div>
+          <div class="proj-body">
+            <div class="title-kr">구미 라면 축제</div>
+            <div class="title-en">Ramen Festival</div>
+            <div class="proj-desc">2024 구미 라면축제에서 AR 및 VR을 활용한 라면 관련 콘텐츠를 개발하여 [스마트 플레이 큐브존]을 운영</div>
+          </div>
+        </article>
+
+        <article class="proj reveal"
+          data-year="2024"
+          data-title-kr="저출생 리서치 워크숍"
+          data-title-en="Low Birthrate Workshop"
+          data-desc="저출생 문제의 원인을 400여 장의 카드로 분석하고 핵심 이슈를 정리한 후 해결 방안을 도출하여 극복 전략을 제안"
+          data-img="../homeImg/04_2024_low_birthrate_research_workshop.png">
+          <div class="proj-media">
+            <span class="badge">2024</span>
+            <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="2024 저출생 리서치 워크숍">
+          </div>
+          <div class="proj-body">
+            <div class="title-kr">저출생 리서치 워크숍</div>
+            <div class="title-en">Low Birthrate Workshop</div>
+            <div class="proj-desc">저출생 문제의 원인을 400여 장의 카드로 분석하고 핵심 이슈를 정리한 후 해결 방안을 도출하여 극복 전략을 제안</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section--contact" id="contact">
+    <div class="container">
+      <div class="titlebar reveal">
+        <div class="bar-left">
+          <!-- 요구: Contact / 찾아오시는 길 -->
+          <div class="bar-label">Contact</div>
+          <div class="bar-title"><span class="kr">찾아오시는 길</span><span class="en">Contact</span></div>
+        </div>
+      </div>
+
+      <div class="contact-grid">
+        <!-- 아이콘 카드 + 복사/링크 버튼 -->
+        <div class="info-stack">
+          <div class="info-card reveal">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 21s7-4.5 7-11a7 7 0 1 0-14 0c0 6.5 7 11 7 11z"/>
+                <circle cx="12" cy="10" r="2.5"/>
+              </svg>
+            </div>
+            <div style="flex:1;">
+              <div class="info-label">Address</div>
+              <div class="info-value" id="addrText">경상북도 구미시 대학로 61<br>국립금오공과대학교 글로벌관 544호</div>
+              <div class="mini-actions">
+                <button class="mini-btn" type="button" id="copyAddrBtn">Copy</button>
+                <a class="mini-btn" href="https://www.google.com/maps/search/?api=1&query=KIT%20Global%20Bldg" target="_blank" rel="noreferrer">Open Map</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-card reveal">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19h16"/>
+                <path d="M6 19V8l6-3 6 3v11"/>
+                <path d="M10 19v-6h4v6"/>
+              </svg>
+            </div>
+            <div>
+              <div class="info-label">Department</div>
+              <div class="info-value">산업·빅데이터공학부 산업공학전공</div>
+            </div>
+          </div>
+
+          <div class="info-card reveal">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v20"/>
+                <path d="M19 9l-7 7-7-7"/>
+              </svg>
+            </div>
+            <div>
+              <div class="info-label">Guide</div>
+              <div class="info-value">푸름관 앞 이마트24 맞은편 글로벌관</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 컬러 지도 -->
+        <div class="map-wrap reveal">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1614.904876884697!2d128.38989137608814!3d36.14692679999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3565c70ae41c0e3d%3A0x9fabc527461cb791!2sKIT%20Global%20Bldg.!5e0!3m2!1sko!2skr!4v1737057288000!5m2!1sko!2skr"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../homeImg/01_kumoh_university_logo.png" alt="금오공과대학교">
+        <span>Service Design Lab</span>
+      </div>
+      <p>© 2026 국립금오공과대학교 서비스디자인연구실. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal-backdrop" data-close="true"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-img">
+        <img id="modalImg" src="" alt="project preview">
+      </div>
+      <div class="modal-body">
+        <div class="modal-head">
+          <div>
+            <h3 id="modalTitle"></h3>
+            <div class="sub" id="modalSub"></div>
+          </div>
+          <button class="close-btn" type="button" id="modalClose" aria-label="Close">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M6 6l12 12M18 6l-12 12"/>
+            </svg>
+          </button>
+        </div>
+        <div class="desc" id="modalDesc"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===== Smooth scroll =====
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // ===== Nav scroll bg + active highlight =====
+    const nav = document.getElementById('nav');
+    const navAnchors = document.querySelectorAll('.nav-a');
+    const sections = [...navAnchors].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    const setScrolled = () => {
+      if (window.scrollY > 12) nav.classList.add('scrolled');
+      else nav.classList.remove('scrolled');
+    };
+    window.addEventListener('scroll', setScrolled);
+    window.addEventListener('load', setScrolled);
+
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navAnchors.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.nav-a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0.01 });
+    sections.forEach(sec => spy.observe(sec));
+
+    // ===== Reveal =====
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) e.target.classList.add('active');
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => io.observe(el));
+
+    // ===== Dark mode (localStorage + system fallback) =====
+    const themeBtn = document.getElementById('themeBtn');
+    const themeIcon = document.getElementById('themeIcon');
+
+    const applyTheme = (t) => {
+      document.body.setAttribute('data-theme', t);
+      // icon: moon for light -> switch, sun for dark -> switch
+      if (t === 'dark') {
+        themeIcon.innerHTML = '<circle cx="12" cy="12" r="5"></circle><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12"></path>';
+      } else {
+        themeIcon.innerHTML = '<path d="M12 3a7 7 0 1 0 9 9 9 9 0 0 1-9-9z"></path>';
+      }
+    };
+
+    const saved = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved || (prefersDark ? 'dark' : 'light'));
+
+    themeBtn.addEventListener('click', () => {
+      const curr = document.body.getAttribute('data-theme') || 'light';
+      const next = curr === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    });
+
+    // ===== Hero gallery parallax =====
+    const heroGallery = document.getElementById('heroGallery');
+    if (heroGallery) {
+      heroGallery.addEventListener('mousemove', (e) => {
+        const r = heroGallery.getBoundingClientRect();
+        const x = (e.clientX - r.left) - r.width / 2;
+        const y = (e.clientY - r.top) - r.height / 2;
+        heroGallery.style.setProperty('--px', x.toFixed(0) + 'px');
+        heroGallery.style.setProperty('--py', y.toFixed(0) + 'px');
+      });
+      heroGallery.addEventListener('mouseleave', () => {
+        heroGallery.style.setProperty('--px', '0px');
+        heroGallery.style.setProperty('--py', '0px');
+      });
+    }
+
+    // ===== Projects filter =====
+    const chips = document.querySelectorAll('.chip[data-filter]');
+    const cards = document.querySelectorAll('.proj');
+
+    const setFilter = (val) => {
+      chips.forEach(c => c.classList.toggle('is-active', c.dataset.filter === val));
+      cards.forEach(card => {
+        const y = card.dataset.year;
+        const show = (val === 'all') || (y === val);
+        card.classList.toggle('is-hidden', !show);
+      });
+    };
+
+    chips.forEach(btn => {
+      btn.addEventListener('click', () => setFilter(btn.dataset.filter));
+    });
+
+    // ===== Project modal =====
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSub = document.getElementById('modalSub');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalClose = document.getElementById('modalClose');
+
+    const openModal = (data) => {
+      modalImg.src = data.img;
+      modalTitle.textContent = `${data.titleKr}`;
+      modalSub.textContent = `${data.titleEn} · ${data.year}`;
+      modalDesc.textContent = data.desc;
+
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    };
+
+    document.querySelectorAll('.proj').forEach(card => {
+      card.addEventListener('click', () => {
+        openModal({
+          year: card.dataset.year,
+          titleKr: card.dataset.titleKr,
+          titleEn: card.dataset.titleEn,
+          desc: card.dataset.desc,
+          img: card.dataset.img
+        });
+      });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+      if (e.target?.dataset?.close) closeModal();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeModal();
+    });
+
+    // ===== Contact copy =====
+    const copyBtn = document.getElementById('copyAddrBtn');
+    const addrText = document.getElementById('addrText');
+    if (copyBtn && addrText) {
+      copyBtn.addEventListener('click', async () => {
+        const text = addrText.innerText.replace(/\n+/g, '\n').trim();
+        try {
+          await navigator.clipboard.writeText(text);
+          copyBtn.textContent = 'Copied!';
+          setTimeout(() => copyBtn.textContent = 'Copy', 1200);
+        } catch {
+          copyBtn.textContent = 'Fail';
+          setTimeout(() => copyBtn.textContent = 'Copy', 1200);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

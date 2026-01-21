@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서비스디자인연구실 | KIT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink: #E91E8C;
+            --pink-light: #FF7EB3;
+            --purple: #B054FF;
+            --blue: #54A8FF;
+            --white: #ffffff;
+            --off-white: #F9F9F9;
+            --black: #0A0A0A;
+            --gray-900: #1a1a1a;
+            --gray-700: #444444;
+            --gray-500: #777777;
+            --gray-300: #BBBBBB;
+            --gray-200: #DDDDDD;
+            --gray-100: #F0F0F0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 10px;
+            height: 10px;
+            background: var(--pink);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            mix-blend-mode: difference;
+            transition: transform 0.2s, width 0.2s, height 0.2s;
+        }
+
+        .cursor.hover {
+            width: 40px;
+            height: 40px;
+            background: transparent;
+            border: 2px solid var(--pink);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 2rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: transparent;
+            mix-blend-mode: difference;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo img {
+            height: 40px;
+            filter: invert(1);
+        }
+
+        .logo-text {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--pink);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section - 완전히 새로운 디자인 */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--black);
+            overflow: hidden;
+        }
+
+        /* 배경 그리드 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(233, 30, 140, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(233, 30, 140, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* 빛나는 원형 배경들 */
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--pink);
+            top: -10%;
+            right: 10%;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--purple);
+            bottom: 10%;
+            left: 5%;
+            animation-delay: 2s;
+        }
+
+        .orb-3 {
+            width: 350px;
+            height: 350px;
+            background: var(--blue);
+            top: 40%;
+            left: 50%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        .hero-container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1600px;
+            padding: 0 5%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero-tag {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--pink);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            padding: 0.8rem 1.5rem;
+            border: 1px solid rgba(233, 30, 140, 0.3);
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-tag {
+            transform: translateY(20px);
+        }
+
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(4rem, 10vw, 9rem);
+            font-weight: 900;
+            line-height: 0.95;
+            letter-spacing: -5px;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .hero-title .word {
+            display: inline-block;
+            opacity: 0;
+            animation: wordReveal 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+        }
+
+        .hero-title .word:nth-child(1) { animation-delay: 0.4s; }
+        .hero-title .word:nth-child(2) { animation-delay: 0.6s; }
+        .hero-title .word:nth-child(3) { animation-delay: 0.8s; }
+
+        @keyframes wordReveal {
+            from {
+                opacity: 0;
+                transform: translateY(100px) rotateX(-90deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0);
+            }
+        }
+
+        .hero-title .gradient {
+            background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 50%, var(--blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.2rem, 2vw, 1.8rem);
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            max-width: 700px;
+            margin: 0 auto 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1.2s;
+            transform: translateY(20px);
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1.4s;
+            transform: translateY(20px);
+        }
+
+        .btn-primary {
+            padding: 1.3rem 3rem;
+            background: linear-gradient(135deg, var(--pink) 0%, var(--purple) 100%);
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(233, 30, 140, 0.3);
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--purple) 0%, var(--blue) 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(233, 30, 140, 0.5);
+        }
+
+        .btn-primary span,
+        .btn-primary svg {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.4s;
+        }
+
+        .btn-primary:hover svg {
+            transform: translateX(5px);
+        }
+
+        .btn-secondary {
+            padding: 1.3rem 3rem;
+            background: transparent;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--pink);
+            background: rgba(233, 30, 140, 0.1);
+        }
+
+        /* 3D 이미지 갤러리 */
+        .hero-gallery {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 500px;
+            margin-top: 5rem;
+            perspective: 1000px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 1.6s;
+            transform: translateY(20px);
+        }
+
+        .gallery-track {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+
+        .gallery-item {
+            position: absolute;
+            width: 350px;
+            height: 250px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(233, 30, 140, 0.3) 0%, rgba(176, 84, 255, 0.3) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05) translateZ(50px);
+            z-index: 10;
+        }
+
+        .gallery-item:nth-child(1) {
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%) rotateY(-15deg);
+            z-index: 3;
+        }
+
+        .gallery-item:nth-child(2) {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotateY(0deg) scale(1.1);
+            z-index: 4;
+        }
+
+        .gallery-item:nth-child(3) {
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%) rotateY(15deg);
+            z-index: 3;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards 2s;
+        }
+
+        .scroll-indicator span {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .scroll-line {
+            width: 2px;
+            height: 60px;
+            background: linear-gradient(to bottom, var(--pink), transparent);
+            animation: scrollLine 2s ease-in-out infinite;
+        }
+
+        @keyframes scrollLine {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(20px); opacity: 0; }
+        }
+
+        /* Keyword Bar */
+        .keyword-bar {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem 4%;
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .keyword-bar-content {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .keyword-item {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .keyword-item:hover {
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        .keyword-item span {
+            color: var(--pink);
+            font-size: 1rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 10rem 8%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8rem;
+            align-items: center;
+            background: var(--black);
+            position: relative;
+        }
+
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(233, 30, 140, 0.5), transparent);
+        }
+
+        .about-image {
+            position: relative;
+        }
+
+        .about-image img {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: linear-gradient(135deg, var(--pink), var(--purple), var(--blue));
+            border-radius: 30px;
+            opacity: 0.2;
+            filter: blur(40px);
+            z-index: -1;
+        }
+
+        .about-content {
+            padding-right: 4rem;
+        }
+
+        .section-tag {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--pink);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -2px;
+            margin-bottom: 2rem;
+            color: var(--white);
+        }
+
+        .about-text {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 2;
+            margin-bottom: 2.5rem;
+        }
+
+        .about-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+
+        .keyword {
+            padding: 0.8rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .keyword:hover {
+            background: linear-gradient(135deg, var(--pink), var(--purple));
+            border-color: transparent;
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        /* Projects Section */
+        .projects {
+            padding: 10rem 4%;
+            background: var(--black);
+        }
+
+        .projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 5rem;
+            padding: 0 4%;
+        }
+
+        .projects-header .section-title {
+            margin-bottom: 0;
+        }
+
+        .view-all {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s;
+            padding: 1rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+        }
+
+        .view-all:hover {
+            color: var(--white);
+            border-color: var(--pink);
+            background: rgba(233, 30, 140, 0.1);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 2rem;
+            padding: 0 4%;
+        }
+
+        .project-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(233, 30, 140, 0.1), rgba(176, 84, 255, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .project-card:hover::before {
+            opacity: 1;
+        }
+
+        .project-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--pink);
+            box-shadow: 0 40px 100px rgba(233, 30, 140, 0.3);
+        }
+
+        .project-card:nth-child(1) { grid-column: span 7; }
+        .project-card:nth-child(2) { grid-column: span 5; }
+        .project-card:nth-child(3) { grid-column: span 4; }
+        .project-card:nth-child(4) { grid-column: span 4; }
+        .project-card:nth-child(5) { grid-column: span 4; }
+
+        .project-img {
+            width: 100%;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+        }
+
+        .project-card:nth-child(1) .project-img {
+            aspect-ratio: 16/9;
+        }
+
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .project-card:hover .project-img img {
+            transform: scale(1.1);
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-year {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--pink);
+            letter-spacing: 2px;
+            margin-bottom: 0.8rem;
+        }
+
+        .project-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.5px;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+        }
+
+        /* Location Section */
+        .location {
+            padding: 10rem 8%;
+            background: var(--black);
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .location-map {
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .location-map img {
+            width: 100%;
+            display: block;
+        }
+
+        .location-info {
+            padding-top: 2rem;
+        }
+
+        .location-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .location-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, rgba(233, 30, 140, 0.2), rgba(176, 84, 255, 0.2));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .location-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--pink);
+        }
+
+        .location-text h4 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--pink);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .location-text p {
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 4rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-logo img {
+            height: 36px;
+            filter: invert(1);
+        }
+
+        .footer-logo span {
+            font-family: 'Syne', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--white);
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero-gallery {
+                height: 400px;
+            }
+
+            .gallery-item {
+                width: 280px;
+                height: 200px;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+                padding: 6rem 5%;
+            }
+
+            .about-content {
+                padding-right: 0;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .project-card:nth-child(1),
+            .project-card:nth-child(2),
+            .project-card:nth-child(3),
+            .project-card:nth-child(4),
+            .project-card:nth-child(5) {
+                grid-column: span 1;
+            }
+
+            .project-card:nth-child(1) {
+                grid-column: span 2;
+            }
+
+            .location {
+                grid-template-columns: 1fr;
+                padding: 6rem 5%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1.5rem 5%;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+                letter-spacing: -2px;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-cta a {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero-gallery {
+                height: 300px;
+            }
+
+            .gallery-item {
+                width: 200px;
+                height: 150px;
+            }
+
+            .gallery-item:nth-child(1) {
+                left: 5%;
+            }
+
+            .gallery-item:nth-child(3) {
+                right: 5%;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card:nth-child(1) {
+                grid-column: span 1;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="../homeImg/01_kumoh_university_logo.png" alt="KIT">
+            <span class="logo-text">Service Design Lab</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+
+        <div class="hero-container">
+            <span class="hero-tag">Kumoh National Institute of Technology</span>
+            <h1 class="hero-title">
+                <span class="word">We</span>
+                <span class="word">Design</span><br>
+                <span class="word gradient">Invisible</span>
+            </h1>
+            <p class="hero-subtitle">
+                사용자 중심의 서비스 설계와 혁신적인 경험 디자인을 연구합니다.<br>
+                이론과 실무의 융합으로 더 나은 내일을 만들어갑니다.
+            </p>
+            <div class="hero-cta">
+                <a href="#projects" class="btn-primary">
+                    <span>프로젝트 보기</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                    </svg>
+                </a>
+                <a href="#about" class="btn-secondary">연구실 소개</a>
+            </div>
+
+            <div class="hero-gallery">
+                <div class="gallery-track">
+                    <div class="gallery-item">
+                        <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="라면축제">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="워크숍">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="포럼">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <span>Scroll</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- Keyword Bar -->
+    <div class="keyword-bar">
+        <div class="keyword-bar-content">
+            <span class="keyword-item"><span>✦</span> Service Design</span>
+            <span class="keyword-item"><span>✦</span> UX Research</span>
+            <span class="keyword-item"><span>✦</span> Policy Design</span>
+            <span class="keyword-item"><span>✦</span> Metaverse</span>
+            <span class="keyword-item"><span>✦</span> AR/VR Experience</span>
+            <span class="keyword-item"><span>✦</span> Design Thinking</span>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-image reveal">
+            <img src="../homeImg/02_professor_profile.png" alt="교수님">
+        </div>
+        <div class="about-content reveal">
+            <span class="section-tag">About Lab</span>
+            <h2 class="section-title">
+                사용자 경험의<br>
+                새로운 가능성을 탐구합니다
+            </h2>
+            <p class="about-text">
+                서비스디자인연구실은 사용자의 관점에서 서비스 제공 과정을 체계적으로 설계하고,
+                다양한 이해관계자와의 협력을 통해 문제를 해결합니다.
+                <br><br>
+                이론과 실무를 접목하여 사람들에게 더 나은 경험과 즐거움을 선사할 수 있는
+                서비스를 만들어가는 데 집중하고 있습니다.
+            </p>
+            <div class="about-keywords">
+                <span class="keyword">서비스디자인</span>
+                <span class="keyword">UX/UI</span>
+                <span class="keyword">정책디자인</span>
+                <span class="keyword">메타버스</span>
+                <span class="keyword">AR/VR</span>
+                <span class="keyword">디자인씽킹</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="projects-header">
+            <div>
+                <span class="section-tag">Recent Works</span>
+                <h2 class="section-title">프로젝트</h2>
+            </div>
+            <a href="#" class="view-all">
+                View All
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="구미 라면 축제">
+                </div>
+                <div class="project-content">
+                    <span class="project-year">2024</span>
+                    <h3 class="project-title">구미 라면 축제</h3>
+                    <p class="project-desc">AR/VR을 활용한 스마트 플레이 큐브존 운영</p>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="저출생 리서치 워크숍">
+                </div>
+                <div class="project-content">
+                    <span class="project-year">2024</span>
+                    <h3 class="project-title">저출생 리서치 워크숍</h3>
+                    <p class="project-desc">400여 장의 카드를 활용한 문제 분석</p>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="시민정책디자인단">
+                </div>
+                <div class="project-content">
+                    <span class="project-year">2024</span>
+                    <h3 class="project-title">시민정책디자인단</h3>
+                    <p class="project-desc">시민 참여형 정책 디자인</p>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/06_2024_metaverse_floorviz.png" alt="메타버스 경진대회">
+                </div>
+                <div class="project-content">
+                    <span class="project-year">2024</span>
+                    <h3 class="project-title">FloorViz</h3>
+                    <p class="project-desc">공간 컴퓨팅 기반 가상 배치 서비스</p>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="여성 포럼">
+                </div>
+                <div class="project-content">
+                    <span class="project-year">2025</span>
+                    <h3 class="project-title">구미 2030 여성 포럼</h3>
+                    <p class="project-desc">청년 여성 정책 개발 워크숍</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="location" id="contact">
+        <div class="location-map reveal">
+            <img src="../homeImg/08_location_map.png" alt="찾아오시는 길">
+        </div>
+        <div class="location-info reveal">
+            <span class="section-tag">Contact</span>
+            <h2 class="section-title">찾아오시는 길</h2>
+
+            <div class="location-item">
+                <div class="location-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <div class="location-text">
+                    <h4>Address</h4>
+                    <p>경상북도 구미시 대학로 61<br>국립금오공과대학교 글로벌관 543~544호</p>
+                </div>
+            </div>
+
+            <div class="location-item">
+                <div class="location-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <div class="location-text">
+                    <h4>Department</h4>
+                    <p>산업·빅데이터공학부 산업공학전공</p>
+                </div>
+            </div>
+
+            <div class="location-item">
+                <div class="location-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="location-text">
+                    <h4>Guide</h4>
+                    <p>푸름관 앞 이마트24 맞은편 글로벌관</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <img src="../homeImg/01_kumoh_university_logo.png" alt="KIT">
+            <span>Service Design Lab</span>
+        </div>
+        <p>© 2024 국립금오공과대학교 서비스디자인연구실. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, .project-card, .keyword').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Scroll Reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            reveals.forEach(el => {
+                const top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 100) {
+                    el.classList.add('active');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href'))?.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

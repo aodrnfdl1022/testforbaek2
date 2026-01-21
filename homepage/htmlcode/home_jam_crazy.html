@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNLEASHED | Service Design Lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@800&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff007a;
+            --neon-blue: #00f0ff;
+            --bg-black: #050505;
+            --panel-bg: rgba(255, 255, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        body {
+            background: var(--bg-black);
+            color: #fff;
+            font-family: 'Space Grotesk', sans-serif;
+            overflow-x: hidden;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        /* -----------------------------------------------------------
+           [1] CRAZY MOUSE SCANNER (라이다 스캐너 효과)
+        ----------------------------------------------------------- */
+        #scanner-aura {
+            position: fixed;
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(255,0,122,0.15) 0%, transparent 70%);
+            border: 1px solid rgba(255,0,122,0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            mix-blend-mode: screen;
+            transition: width 0.3s, height 0.3s;
+        }
+        #scanner-dot {
+            position: fixed;
+            width: 10px; height: 10px;
+            background: #fff;
+            border-radius: 50%;
+            z-index: 10000;
+            pointer-events: none;
+            box-shadow: 0 0 20px var(--neon-pink), 0 0 40px var(--neon-blue);
+        }
+
+        /* -----------------------------------------------------------
+           [2] NAVIGATION (HUD 스타일)
+        ----------------------------------------------------------- */
+        nav {
+            position: fixed; top: 0; width: 100%; padding: 30px 50px;
+            display: flex; justify-content: space-between; align-items: center;
+            z-index: 1000;
+        }
+        .logo { display: flex; align-items: center; gap: 15px; }
+        .logo img { height: 40px; filter: drop-shadow(0 0 10px var(--neon-blue)); }
+        .logo-text { font-family: 'Syne'; font-size: 1.2rem; letter-spacing: 2px; color: var(--neon-blue); }
+
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a {
+            color: #fff; text-decoration: none; font-weight: 700; font-size: 0.8rem;
+            text-transform: uppercase; letter-spacing: 3px;
+            position: relative; padding: 5px 10px;
+        }
+        .nav-links a::before {
+            content: '['; position: absolute; left: -10px; opacity: 0; transition: 0.3s;
+        }
+        .nav-links a::after {
+            content: ']'; position: absolute; right: -10px; opacity: 0; transition: 0.3s;
+        }
+        .nav-links a:hover::before, .nav-links a:hover::after { opacity: 1; color: var(--neon-pink); }
+
+        /* -----------------------------------------------------------
+           [3] HERO SECTION (미친 글리치 & 3D 레이어)
+        ----------------------------------------------------------- */
+        .hero {
+            height: 110vh; display: flex; align-items: center; justify-content: center;
+            perspective: 2000px; overflow: hidden;
+        }
+        .hero-title-wrap { text-align: center; z-index: 10; transform-style: preserve-3d; }
+        .hero-tag { color: var(--neon-pink); font-weight: 700; letter-spacing: 10px; margin-bottom: 20px; display: block; }
+        
+        .hero-title {
+            font-family: 'Syne'; font-size: clamp(5rem, 15vw, 12rem);
+            line-height: 0.8; letter-spacing: -5px; text-transform: uppercase;
+            position: relative;
+        }
+        .hero-title .invisible {
+            color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+            transition: 0.5s;
+        }
+        .hero-title:hover .invisible {
+            color: #fff; -webkit-text-stroke: 0;
+            text-shadow: 0 0 50px var(--neon-pink);
+        }
+
+        /* 3D Floating Images */
+        .floating-container {
+            position: absolute; width: 100%; height: 100%;
+            pointer-events: none;
+        }
+        .float-card {
+            position: absolute; border-radius: 10px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: var(--panel-bg); backdrop-filter: blur(10px);
+            transition: 0.1s ease-out;
+        }
+        .float-1 { width: 400px; top: 10%; right: 10%; transform: rotateY(-20deg) rotateX(10deg); }
+        .float-2 { width: 300px; bottom: 15%; left: 5%; transform: rotateY(20deg); }
+        .float-3 { width: 350px; top: 20%; left: 15%; transform: rotateZ(-10deg); opacity: 0.5; }
+        .float-card img { width: 100%; opacity: 0.7; filter: grayscale(1); transition: 0.5s; }
+        .float-card:hover img { opacity: 1; filter: grayscale(0); }
+
+        /* -----------------------------------------------------------
+           [4] PROJECT GRID (자율주행 분석 인터페이스 스타일)
+        ----------------------------------------------------------- */
+        .section-label { padding: 100px 50px 20px; color: var(--neon-blue); font-weight: 700; border-bottom: 1px solid #333; }
+        
+        .project-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 1px; background: #333; border-bottom: 1px solid #333;
+        }
+        .project-card {
+            background: var(--bg-black); padding: 60px; position: relative;
+            overflow: hidden; min-height: 500px; display: flex; flex-direction: column; justify-content: flex-end;
+        }
+        .project-card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--neon-pink); transform: translateY(100%); transition: 0.6s cubic-bezier(0.85, 0, 0.15, 1);
+            z-index: 0;
+        }
+        .project-card:hover::before { transform: translateY(0); }
+
+        .project-img-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.2; filter: grayscale(1) contrast(1.5); transition: 0.6s; z-index: 1;
+        }
+        .project-card:hover .project-img-bg { opacity: 0.5; transform: scale(1.1); filter: grayscale(0); }
+
+        .project-content { position: relative; z-index: 2; transition: 0.4s; }
+        .project-card:hover .project-content { transform: translateY(-20px); }
+        .project-card h3 { font-family: 'Syne'; font-size: 2.5rem; margin-bottom: 15px; }
+        
+        /* -----------------------------------------------------------
+           [5] CONTACT (시그널 인터렉션)
+        ----------------------------------------------------------- */
+        .location {
+            display: grid; grid-template-columns: 1fr 1fr; min-height: 80vh;
+        }
+        .map-wrap { position: relative; border-right: 1px solid #333; overflow: hidden; }
+        .map-wrap img { width: 100%; height: 100%; object-fit: cover; filter: invert(1) hue-rotate(180deg) brightness(0.7); }
+        
+        .contact-info { padding: 100px; display: flex; flex-direction: column; justify-content: center; }
+        .info-box { margin-bottom: 50px; }
+        .info-box h4 { color: var(--neon-pink); letter-spacing: 5px; margin-bottom: 20px; }
+        .info-box p { font-size: 1.5rem; line-height: 1.4; }
+
+        /* Footer */
+        footer { padding: 50px; border-top: 1px solid #333; display: flex; justify-content: space-between; align-items: center; }
+
+        /* Animations */
+        @keyframes scanLine {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
+        .scan-line {
+            position: fixed; top: 0; left: 0; width: 100%; height: 2px;
+            background: rgba(0, 240, 255, 0.2); z-index: 10001;
+            animation: scanLine 4s linear infinite; pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scanner-aura"></div>
+    <div id="scanner-dot"></div>
+    <div class="scan-line"></div>
+
+    <nav>
+        <div class="logo">
+            <img src="../homeImg/01_kumoh_university_logo.png" alt="KIT">
+            <span class="logo-text">SD LAB_SYS.EXE</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Main</a></li>
+            <li><a href="#about">Philosophy</a></li>
+            <li><a href="#projects">Data_Archive</a></li>
+            <li><a href="#contact">Terminal</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="floating-container">
+            <div class="float-card float-1"><img src="../homeImg/03_2024_gumi_ramen_festival.png"></div>
+            <div class="float-card float-2"><img src="../homeImg/05_2024_gumi_citizen_policy_design.png"></div>
+            <div class="float-card float-3"><img src="../homeImg/07_2025_gumi_2030_women_forum.png"></div>
+        </div>
+        
+        <div class="hero-title-wrap">
+            <span class="hero-tag">KIT SERVICE DESIGN LAB</span>
+            <h1 class="hero-title">
+                WE DESIGN<br>
+                <span class="invisible">THE INVISIBLE</span>
+            </h1>
+        </div>
+    </section>
+
+    <div class="section-label">01 // THE PHILOSOPHY</div>
+    <section class="location" id="about" style="min-height: auto;">
+        <div class="contact-info">
+            <h2 style="font-family:'Syne'; font-size: 4rem; margin-bottom: 40px;">BEYOND<br>THE VISION.</h2>
+            <p style="font-size: 1.2rem; color: #888; max-width: 500px;">
+                우리는 보이지 않는 데이터의 흐름과 인간의 무의식을 설계합니다. 
+                자율주행의 정확도와 서비스의 따뜻함이 만나는 그 경계를 탐구하는 유일한 연구소입니다.
+            </p>
+        </div>
+        <div class="map-wrap">
+            <img src="../homeImg/02_professor_profile.png" style="filter: grayscale(1) contrast(1.5);">
+        </div>
+    </section>
+
+    <div class="section-label">02 // DATA ARCHIVE</div>
+    <section class="project-grid" id="projects">
+        <div class="project-card">
+            <img class="project-img-bg" src="../homeImg/03_2024_gumi_ramen_festival.png">
+            <div class="project-content">
+                <p style="color:var(--neon-blue)">[ DATA_01 ]</p>
+                <h3>GUMI RAMEN<br>FESTIVAL</h3>
+                <p>스마트 플레이 큐브존 기반 XR 경험 설계</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <img class="project-img-bg" src="../homeImg/04_2024_low_birthrate_research_workshop.png">
+            <div class="project-content">
+                <p style="color:var(--neon-blue)">[ DATA_02 ]</p>
+                <h3>LOW BIRTHRATE<br>RESEARCH</h3>
+                <p>정성적 데이터 정렬 알고리즘 기반 문제 정의</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <img class="project-img-bg" src="../homeImg/05_2024_gumi_citizen_policy_design.png">
+            <div class="project-content">
+                <p style="color:var(--neon-blue)">[ DATA_03 ]</p>
+                <h3>CITIZEN POLICY<br>DESIGN</h3>
+                <p>시민 참여 데이터 모델링 및 거버넌스 디자인</p>
+            </div>
+        </div>
+        <div class="project-card">
+            <img class="project-img-bg" src="../homeImg/06_2024_metaverse_floorviz.png">
+            <div class="project-content">
+                <p style="color:var(--neon-blue)">[ DATA_04 ]</p>
+                <h3>FLOORVIZ<br>INTERFACE</h3>
+                <p>공간 컴퓨팅 환경의 가상 배치 엔진 개발</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="section-label">03 // TERMINAL</div>
+    <section class="location" id="contact">
+        <div class="map-wrap">
+            <img src="../homeImg/08_location_map.png">
+        </div>
+        <div class="contact-info">
+            <div class="info-box">
+                <h4>ADDRESS</h4>
+                <p>KIT GLOBAL BUILDING<br>ROOM 543-544</p>
+            </div>
+            <div class="info-box">
+                <h4>DEPARTMENT</h4>
+                <p>산업·빅데이터공학부 산업공학전공</p>
+            </div>
+            <div class="info-box">
+                <button onclick="alert('SYSTEM OVERLOAD: 디자인 감도 폭발')" style="padding: 20px 40px; background: none; border: 1px solid var(--neon-blue); color: var(--neon-blue); font-family: 'Syne'; font-weight: 800; letter-spacing: 5px;">CONNECT TERMINAL</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <span class="logo-text">KIT SD LAB // VER 2.0.26</span>
+        <p style="color: #444; font-size: 0.7rem;">ALL DATA ENCRYPTED BY DESIGN THINKING.</p>
+    </footer>
+
+    <script>
+        const aura = document.getElementById('scanner-aura');
+        const dot = document.getElementById('scanner-dot');
+        const floatCards = document.querySelectorAll('.float-card');
+
+        // [1] MOUSE TRACKING & INTERACTION
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX;
+            const y = e.clientY;
+            
+            aura.style.left = x + 'px';
+            aura.style.top = y + 'px';
+            dot.style.left = x + 'px';
+            dot.style.top = y + 'px';
+
+            // [2] HERO 3D PARALLAX (미친 입체감)
+            const moveX = (window.innerWidth / 2 - x) * 0.05;
+            const moveY = (window.innerHeight / 2 - y) * 0.05;
+            
+            document.querySelector('.hero-title-wrap').style.transform = `rotateY(${moveX}deg) rotateX(${-moveY}deg)`;
+            
+            floatCards.forEach((card, i) => {
+                const speed = (i + 1) * 0.1;
+                card.style.transform = `translate(${moveX * speed}px, ${moveY * speed}px) rotateY(${moveX}deg)`;
+            });
+        });
+
+        // [3] CLICK EFFECT
+        document.addEventListener('mousedown', () => {
+            aura.style.width = '200px';
+            aura.style.height = '200px';
+            dot.style.transform = 'scale(2)';
+        });
+        document.addEventListener('mouseup', () => {
+            aura.style.width = '400px';
+            aura.style.height = '400px';
+            dot.style.transform = 'scale(1)';
+        });
+
+        // [4] SMOOTH SCROLLING
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

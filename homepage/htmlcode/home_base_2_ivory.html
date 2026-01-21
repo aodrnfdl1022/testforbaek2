@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서비스디자인연구실 | KIT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-primary: #e91e8c;
+            --pink-light: #ff69b4;
+            --pink-soft: #ffc0d9;
+            
+            --cream: #faf7f2;
+            --beige: #e8dfd0;
+            --sand: #d4c4b0;
+            --warm-gray: #968b7f;
+            
+            --dark-brown: #3d2f2a;
+            --charcoal: #2a2422;
+            --off-black: #1a1614;
+            
+            --gold: #c9a55a;
+            --terracotta: #c97064;
+            --sage: #9db39d;
+            
+            --text-primary: #2a2422;
+            --text-secondary: #635550;
+            --text-light: #968b7f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--cream);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--pink-soft);
+            color: var(--dark-brown);
+        }
+
+        /* Navigation - Floating Style */
+        nav {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(30px);
+            border-radius: 100px;
+            border: 1px solid rgba(233, 30, 140, 0.1);
+            box-shadow: 0 10px 40px rgba(233, 30, 140, 0.1);
+            max-width: 900px;
+            width: 90%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .logo img {
+            height: 28px;
+        }
+
+        .logo-text {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--pink-primary);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--pink-primary);
+        }
+
+        /* Hero - Asymmetric Grid */
+        .hero {
+            min-height: 100vh;
+            padding: 8rem 4% 4rem;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            background: linear-gradient(135deg, var(--cream) 0%, #fff 50%, var(--beige) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(233, 30, 140, 0.08) 0%, transparent 70%);
+            top: -200px;
+            right: -200px;
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            background: white;
+            border: 1px solid var(--beige);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--pink-primary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .hero h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(3rem, 6vw, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 2rem;
+        }
+
+        .hero h1 .line {
+            display: block;
+        }
+
+        .hero h1 .gradient {
+            background: linear-gradient(135deg, var(--pink-primary) 0%, var(--terracotta) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.9;
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            padding: 1.1rem 2.5rem;
+            background: var(--pink-primary);
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 100px;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            background: var(--pink-light);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(233, 30, 140, 0.3);
+        }
+
+        .btn-secondary {
+            padding: 1.1rem 2.5rem;
+            background: white;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid var(--beige);
+            border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--pink-primary);
+            color: var(--pink-primary);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Gallery - Bento Style */
+        .hero-gallery {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 140px);
+            gap: 1rem;
+        }
+
+        .gallery-item {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+        }
+
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(233, 30, 140, 0.2) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(233, 30, 140, 0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item:nth-child(1) {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        /* Keyword Bar - Inline Style */
+        .keyword-bar {
+            padding: 2rem 4%;
+            background: white;
+            border-top: 1px solid var(--beige);
+            border-bottom: 1px solid var(--beige);
+        }
+
+        .keyword-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .keyword-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .keyword-number {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--pink-primary);
+            line-height: 1;
+        }
+
+        .keyword-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .keyword-label strong {
+            display: block;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* About - Side by Side */
+        .about {
+            padding: 8rem 4%;
+            background: var(--cream);
+        }
+
+        .about-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-image-wrap {
+            position: relative;
+        }
+
+        .about-image-wrap::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--pink-soft) 0%, var(--beige) 100%);
+            border-radius: 30px;
+            top: 20px;
+            left: 20px;
+            z-index: -1;
+        }
+
+        .about-image-wrap img {
+            width: 100%;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+        }
+
+        .about-content {
+            padding-left: 2rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: white;
+            border: 1px solid var(--beige);
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--pink-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+            color: var(--dark-brown);
+        }
+
+        .about-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 2;
+            margin-bottom: 2rem;
+        }
+
+        .about-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+        }
+
+        .keyword-tag {
+            padding: 0.7rem 1.4rem;
+            background: white;
+            border: 1px solid var(--beige);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.3s;
+        }
+
+        .keyword-tag:hover {
+            background: var(--pink-soft);
+            border-color: var(--pink-primary);
+            color: var(--pink-primary);
+            transform: translateY(-3px);
+        }
+
+        /* Projects - Magazine Grid */
+        .projects {
+            padding: 8rem 4%;
+            background: white;
+        }
+
+        .projects-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 4rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            grid-auto-rows: 280px;
+            gap: 1.5rem;
+        }
+
+        .project-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            background: var(--cream);
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 30px 70px rgba(233, 30, 140, 0.15);
+        }
+
+        /* Magazine Layout Pattern */
+        .project-card:nth-child(1) {
+            grid-column: span 4;
+            grid-row: span 2;
+        }
+
+        .project-card:nth-child(2) {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .project-card:nth-child(3) {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .project-card:nth-child(4) {
+            grid-column: span 3;
+            grid-row: span 1;
+        }
+
+        .project-card:nth-child(5) {
+            grid-column: span 3;
+            grid-row: span 1;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 70%;
+            overflow: hidden;
+            background: var(--beige);
+        }
+
+        .project-card:nth-child(1) .project-img {
+            height: 65%;
+        }
+
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .project-card:hover .project-img img {
+            transform: scale(1.1);
+        }
+
+        .project-info {
+            padding: 1.5rem;
+            background: white;
+            height: 30%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .project-card:nth-child(1) .project-info {
+            height: 35%;
+        }
+
+        .project-year {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--pink-primary);
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+        }
+
+        .project-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--dark-brown);
+            margin-bottom: 0.4rem;
+            letter-spacing: -0.5px;
+        }
+
+        .project-card:nth-child(1) .project-title {
+            font-size: 1.5rem;
+        }
+
+        .project-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        /* Contact - Horizontal */
+        .contact {
+            padding: 8rem 4%;
+            background: var(--cream);
+        }
+
+        .contact-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .contact-info {
+            position: sticky;
+            top: 120px;
+        }
+
+        .contact-items {
+            margin-top: 2rem;
+        }
+
+        .contact-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--beige);
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .contact-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-value {
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .contact-value a {
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .contact-value a:hover {
+            color: var(--pink-primary);
+        }
+
+        .contact-map {
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            height: 100%;
+            min-height: 500px;
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-brown);
+            padding: 3rem 4%;
+            border-top: 3px solid var(--pink-primary);
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .footer-logo img {
+            height: 28px;
+        }
+
+        .footer-logo span {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--beige);
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--warm-gray);
+        }
+
+        /* Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .hero {
+                grid-template-columns: 1fr;
+                padding-top: 10rem;
+            }
+
+            .hero-gallery {
+                margin-top: 3rem;
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-content {
+                padding-left: 0;
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .project-card:nth-child(1) {
+                grid-column: span 4;
+            }
+
+            .project-card:nth-child(2),
+            .project-card:nth-child(3) {
+                grid-column: span 2;
+            }
+
+            .project-card:nth-child(4),
+            .project-card:nth-child(5) {
+                grid-column: span 2;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                position: relative;
+                top: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                width: 95%;
+                padding: 0.8rem 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                padding-top: 8rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-gallery {
+                grid-template-rows: repeat(3, 120px);
+            }
+
+            .keyword-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+                grid-auto-rows: 300px;
+            }
+
+            .project-card:nth-child(1),
+            .project-card:nth-child(2),
+            .project-card:nth-child(3),
+            .project-card:nth-child(4),
+            .project-card:nth-child(5) {
+                grid-column: span 1;
+                grid-row: span 1;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            footer .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="../homeImg/01_kumoh_university_logo.png" alt="KIT">
+            <span class="logo-text">Service Design Lab</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content reveal">
+            <span class="hero-badge">Kumoh National Institute of Technology</span>
+            <h1>
+                <span class="line">We Design</span>
+                <span class="line">the <span class="gradient">Invisible</span></span>
+            </h1>
+            <p class="hero-desc">
+                사용자 중심의 서비스 설계와 혁신적인 경험 디자인을 연구합니다.
+                이론과 실무의 융합으로 더 나은 내일을 만들어갑니다.
+            </p>
+            <div class="hero-cta">
+                <a href="#projects" class="btn-primary">프로젝트 보기</a>
+                <a href="#about" class="btn-secondary">연구실 소개</a>
+            </div>
+        </div>
+        <div class="hero-gallery reveal">
+            <div class="gallery-item">
+                <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="라면축제">
+            </div>
+            <div class="gallery-item">
+                <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="워크숍">
+            </div>
+            <div class="gallery-item">
+                <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="포럼">
+            </div>
+            <div class="gallery-item">
+                <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="리서치">
+            </div>
+        </div>
+    </section>
+
+    <!-- Keyword Bar -->
+    <div class="keyword-bar">
+        <div class="keyword-content">
+            <div class="keyword-item reveal">
+                <div class="keyword-number">50+</div>
+                <div class="keyword-label">
+                    <strong>Projects</strong>
+                    완료된 프로젝트
+                </div>
+            </div>
+            <div class="keyword-item reveal">
+                <div class="keyword-number">15+</div>
+                <div class="keyword-label">
+                    <strong>Awards</strong>
+                    수상 경력
+                </div>
+            </div>
+            <div class="keyword-item reveal">
+                <div class="keyword-number">100+</div>
+                <div class="keyword-label">
+                    <strong>Partners</strong>
+                    협력 기관
+                </div>
+            </div>
+            <div class="keyword-item reveal">
+                <div class="keyword-number">10+</div>
+                <div class="keyword-label">
+                    <strong>Years</strong>
+                    연구 경험
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-container">
+            <div class="about-image-wrap reveal">
+                <img src="../homeImg/02_professor_profile.png" alt="교수님">
+            </div>
+            <div class="about-content reveal">
+                <span class="section-tag">About Lab</span>
+                <h2 class="section-title">
+                    사용자 경험의<br>
+                    새로운 가능성을 탐구합니다
+                </h2>
+                <p class="about-text">
+                    서비스디자인연구실은 사용자의 관점에서 서비스 제공 과정을 체계적으로 설계하고,
+                    다양한 이해관계자와의 협력을 통해 문제를 해결합니다.
+                    <br><br>
+                    이론과 실무를 접목하여 사람들에게 더 나은 경험과 즐거움을 선사할 수 있는
+                    서비스를 만들어가는 데 집중하고 있습니다.
+                </p>
+                <div class="about-keywords">
+                    <span class="keyword-tag">서비스디자인</span>
+                    <span class="keyword-tag">UX/UI</span>
+                    <span class="keyword-tag">정책디자인</span>
+                    <span class="keyword-tag">메타버스</span>
+                    <span class="keyword-tag">AR/VR</span>
+                    <span class="keyword-tag">디자인씽킹</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="projects-container">
+            <div class="projects-header">
+                <div>
+                    <span class="section-tag">Recent Works</span>
+                    <h2 class="section-title">프로젝트</h2>
+                </div>
+            </div>
+
+            <div class="projects-grid">
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="구미 라면 축제">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2024</span>
+                        <h3 class="project-title">구미 라면 축제</h3>
+                        <p class="project-desc">AR/VR을 활용한 스마트 플레이 큐브존 운영</p>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="저출생 리서치 워크숍">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2024</span>
+                        <h3 class="project-title">저출생 리서치 워크숍</h3>
+                        <p class="project-desc">400여 장의 카드를 활용한 문제 분석</p>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="시민정책디자인단">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2024</span>
+                        <h3 class="project-title">시민정책디자인단</h3>
+                        <p class="project-desc">시민 참여형 정책 디자인</p>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/06_2024_metaverse_floorviz.png" alt="메타버스 경진대회">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2024</span>
+                        <h3 class="project-title">FloorViz</h3>
+                        <p class="project-desc">공간 컴퓨팅 기반 가상 배치 서비스</p>
+                    </div>
+                </div>
+
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="여성 포럼">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2025</span>
+                        <h3 class="project-title">구미 2030 여성 포럼</h3>
+                        <p class="project-desc">청년 여성 정책 개발 워크숍</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="contact-info reveal">
+                <span class="section-tag">Contact</span>
+                <h2 class="section-title">찾아오시는 길</h2>
+                <div class="contact-items">
+                    <div class="contact-item">
+                        <div class="contact-label">Address</div>
+                        <div class="contact-value">
+                            경상북도 구미시 대학로 61<br>
+                            국립금오공과대학교 글로벌관 543~544호
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Department</div>
+                        <div class="contact-value">
+                            산업·빅데이터공학부 산업공학전공
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">Guide</div>
+                        <div class="contact-value">
+                            푸름관 앞 이마트24 맞은편 글로벌관
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-map reveal">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3229.809753769394!2d128.38989137608814!3d36.14692679999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3565c70ae41c0e3d%3A0x9fabc527461cb791!2sKIT%20Global%20Bldg.!5e0!3m2!1sko!2skr!4v1737057288000!5m2!1sko!2skr"
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="../homeImg/01_kumoh_university_logo.png" alt="KIT">
+                <span>Service Design Lab</span>
+            </div>
+            <p>© 2024 국립금오공과대학교 서비스디자인연구실. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+            reveals.forEach(el => {
+                const top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 100) {
+                    el.classList.add('active');
+                }
+            });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href'))?.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>

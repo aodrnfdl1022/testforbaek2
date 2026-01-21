@@ -1,0 +1,1060 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서비스디자인연구실 | 금오공과대학교</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-primary: #E91E8C;
+            --pink-light: #FF69B4;
+            --pink-soft: #FFD6E8;
+            --pink-pale: #FFF0F5;
+            
+            --purple: #8B5CF6;
+            --purple-light: #C4B5FD;
+            
+            --cream: #FFFBF7;
+            --beige: #F5EDE6;
+            --warm-white: #FEFCFA;
+            
+            --dark: #1A1A2E;
+            --text-primary: #2D2D3A;
+            --text-secondary: #6B6B7B;
+            --text-light: #9D9DAD;
+            
+            --gradient-main: linear-gradient(135deg, #E91E8C 0%, #FF69B4 50%, #C4B5FD 100%);
+            --gradient-soft: linear-gradient(135deg, #FFD6E8 0%, #E8D5FF 100%);
+            
+            --shadow-sm: 0 4px 20px rgba(233, 30, 140, 0.08);
+            --shadow-md: 0 10px 40px rgba(233, 30, 140, 0.12);
+            --shadow-lg: 0 25px 60px rgba(233, 30, 140, 0.18);
+            
+            --radius: 24px;
+            --radius-lg: 32px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: var(--cream);
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        ::selection {
+            background: var(--pink-soft);
+            color: var(--dark);
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        nav {
+            position: fixed;
+            top: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 100px;
+            border: 1px solid rgba(233, 30, 140, 0.1);
+            box-shadow: var(--shadow-sm);
+            max-width: 850px;
+            width: 90%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .logo img {
+            height: 32px;
+        }
+
+        .logo-text {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--pink-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--pink-primary);
+        }
+
+        /* ============================================
+           HERO - 강렬한 첫 화면
+           ============================================ */
+        .hero {
+            min-height: 100vh;
+            padding: 7rem 4% 4rem;
+            background: linear-gradient(180deg, var(--cream) 0%, var(--warm-white) 50%, var(--pink-pale) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 배경 장식 */
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(233, 30, 140, 0.08) 0%, transparent 60%);
+            top: -300px;
+            right: -200px;
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.06) 0%, transparent 60%);
+            bottom: -200px;
+            left: -200px;
+            border-radius: 50%;
+        }
+
+        /* 히어로 상단: 타이틀 + 버튼 */
+        .hero-top {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.5rem;
+            background: white;
+            border: 1px solid var(--beige);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--gradient-main);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.4); }
+        }
+
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(3.5rem, 8vw, 6rem);
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -3px;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title .gradient {
+            background: var(--gradient-main);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-desc {
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.9;
+        }
+
+        .hero-desc strong {
+            color: var(--pink-primary);
+            font-weight: 600;
+        }
+
+        /* 버튼 그룹 */
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 100px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: var(--gradient-main);
+            color: white;
+            box-shadow: 0 10px 30px rgba(233, 30, 140, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 40px rgba(233, 30, 140, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--text-primary);
+            border: 2px solid var(--beige);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--pink-primary);
+            color: var(--pink-primary);
+            transform: translateY(-4px);
+        }
+
+        .btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 히어로 이미지 그리드 - 프로젝트 사진들 */
+        .hero-gallery {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.5) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-label {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            z-index: 2;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-item-label {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           ABOUT - 연구실 소개 + 교수님
+           ============================================ */
+        .about {
+            padding: 8rem 4%;
+            background: var(--warm-white);
+        }
+
+        .about-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .about-content {
+            padding-right: 2rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1.2rem;
+            background: var(--gradient-soft);
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--pink-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 800;
+            line-height: 1.2;
+            letter-spacing: -1px;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+
+        .about-text {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            line-height: 2;
+            margin-bottom: 2rem;
+        }
+
+        .about-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .keyword-tag {
+            padding: 0.6rem 1.3rem;
+            background: white;
+            border: 1px solid var(--beige);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .keyword-tag:hover {
+            background: var(--pink-soft);
+            border-color: var(--pink-primary);
+            color: var(--pink-primary);
+            transform: translateY(-3px);
+        }
+
+        /* 교수님 카드 */
+        .professor-card {
+            position: relative;
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.5s ease;
+        }
+
+        .professor-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .professor-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: var(--gradient-main);
+        }
+
+        .professor-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .professor-info {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .professor-info h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .professor-info p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.2rem;
+        }
+
+        .professor-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.8rem;
+            background: var(--gradient-main);
+            color: white;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 100px;
+            transition: all 0.3s ease;
+        }
+
+        .professor-link:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(233, 30, 140, 0.3);
+        }
+
+        /* ============================================
+           PROJECTS - 정사각형 그리드
+           ============================================ */
+        .projects {
+            padding: 8rem 4%;
+            background: var(--cream);
+        }
+
+        .projects-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .projects-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* 첫 번째 프로젝트 2칸 */
+        .project-card:first-child {
+            grid-column: span 2;
+        }
+
+        .project-card:first-child .project-img {
+            height: 320px;
+        }
+
+        .project-img {
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .project-card:hover .project-img img {
+            transform: scale(1.08);
+        }
+
+        .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-year {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: var(--gradient-main);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border-radius: 100px;
+            margin-bottom: 0.8rem;
+        }
+
+        .project-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           CONTACT - 구글맵 포함
+           ============================================ */
+        .contact {
+            padding: 8rem 4%;
+            background: var(--warm-white);
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .contact-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .contact-info-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+        }
+
+        .contact-item {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--beige);
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .contact-item:first-child {
+            padding-top: 0;
+        }
+
+        .contact-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--pink-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        .contact-map {
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            height: 450px;
+        }
+
+        .contact-map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            background: var(--dark);
+            padding: 2.5rem 4%;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-logo img {
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-logo span {
+            font-family: 'Syne', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: white;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* ============================================
+           ANIMATIONS
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .hero-gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .about-container {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-content {
+                padding-right: 0;
+                order: 2;
+            }
+
+            .professor-card {
+                max-width: 400px;
+                margin: 0 auto;
+            }
+
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .project-card:first-child {
+                grid-column: span 2;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                width: 95%;
+                padding: 0.6rem 1.2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 2.8rem;
+                letter-spacing: -1px;
+            }
+
+            .hero-gallery {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card:first-child {
+                grid-column: span 1;
+            }
+
+            .project-card:first-child .project-img {
+                height: 220px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="../homeImg/01_kumoh_university_logo.png" alt="금오공과대학교">
+            <span class="logo-text">Service Design Lab</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-top reveal">
+            <span class="hero-badge">Kumoh National Institute of Technology</span>
+            <h1 class="hero-title">
+                We Design the<br>
+                <span class="gradient">Invisible!</span>
+            </h1>
+            <p class="hero-desc">
+                <strong>국립금오공과대학교 산업·빅데이터공학부 산업공학전공</strong> 소속의 서비스디자인연구실은 
+                사용자의 관점에서 서비스 제공 과정을 체계적으로 설계하고, 다양한 이해관계자와의 협력을 통해 
+                문제를 풀기 위해 노력하고 있습니다.
+            </p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7"/>
+                        <rect x="14" y="3" width="7" height="7"/>
+                        <rect x="14" y="14" width="7" height="7"/>
+                        <rect x="3" y="14" width="7" height="7"/>
+                    </svg>
+                    Project
+                </a>
+                <a href="#about" class="btn btn-secondary">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                        <circle cx="12" cy="7" r="4"/>
+                    </svg>
+                    Professor
+                </a>
+            </div>
+        </div>
+
+        <!-- 프로젝트 이미지 갤러리 -->
+        <div class="hero-gallery reveal">
+            <div class="gallery-item">
+                <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="2025 구미 2030 여성 포럼">
+                <span class="gallery-item-label">2025 여성 포럼</span>
+            </div>
+            <div class="gallery-item">
+                <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="시민정책디자인단">
+                <span class="gallery-item-label">시민정책디자인</span>
+            </div>
+            <div class="gallery-item">
+                <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="라면축제">
+                <span class="gallery-item-label">라면 축제</span>
+            </div>
+            <div class="gallery-item">
+                <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="저출생 리서치">
+                <span class="gallery-item-label">저출생 리서치</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-container">
+            <div class="about-content reveal">
+                <span class="section-tag">About Lab</span>
+                <h2 class="section-title">
+                    사용자 경험의<br>
+                    새로운 가능성을 탐구합니다
+                </h2>
+                <p class="about-text">
+                    우리 연구실은 이론과 실무를 접목하여 사람들에게 더 나은 경험과 즐거움을 
+                    선사할 수 있는 서비스를 만들어가는 데 집중하고 있습니다.
+                    <br><br>
+                    다양한 이해관계자와의 협력을 통해 복잡한 문제를 해결하고, 
+                    사용자 중심의 혁신적인 솔루션을 제안합니다.
+                </p>
+                <div class="about-keywords">
+                    <span class="keyword-tag">서비스디자인</span>
+                    <span class="keyword-tag">UX/UI</span>
+                    <span class="keyword-tag">정책디자인</span>
+                    <span class="keyword-tag">메타버스</span>
+                    <span class="keyword-tag">AR/VR</span>
+                    <span class="keyword-tag">디자인씽킹</span>
+                </div>
+            </div>
+
+            <div class="professor-card reveal">
+                <img src="../homeImg/02_professor_profile.png" alt="교수님 프로필" class="professor-img">
+                <div class="professor-info">
+                    <h3>Professor Profile</h3>
+                    <p>서비스디자인연구실 지도교수</p>
+                    <a href="#" class="professor-link">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                        자세히 보기
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="projects-container">
+            <div class="projects-header reveal">
+                <span class="section-tag">Recent Works</span>
+                <h2 class="section-title">RECENT PROJECT</h2>
+            </div>
+
+            <div class="projects-grid">
+                <!-- 1. 2025 구미 2030 여성 포럼 -->
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="2025 구미 2030 여성 포럼">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2025</span>
+                        <h3 class="project-title">구미 2030 여성 포럼</h3>
+                        <p class="project-desc">구미 2030 청년 여성들의 직접 참여와 소분과 모임 등을 통해 정책 수요자의 의견과 요구를 정성적으로 도출하여 청년 여성 정책 개발에 활용</p>
+                    </div>
+                </div>
+
+                <!-- 2. 2024 구미 시민정책디자인단 -->
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="2024 구미 시민정책디자인단">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2024</span>
+                        <h3 class="project-title">구미 시민정책디자인단</h3>
+                        <p class="project-desc">구미시의 저출생 극복을 위해 시민과 서비스 디자이너가 협력하여, 청년의 연애·결혼 포기와 경력 단절 문제를 중심으로 정책을 제안</p>
+                    </div>
+                </div>
+
+                <!-- 3. 2024 동북권 메타버스 창작자 경진대회 -->
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/06_2024_metaverse_floorviz.png" alt="2024 동북권 메타버스 창작자 경진대회">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2024</span>
+                        <h3 class="project-title">동북권 메타버스 창작자 경진대회</h3>
+                        <p class="project-desc">공간 컴퓨팅 기반 공장 설비 가상 배치 서비스인 플로어비즈(FloorViz)를 개발 및 경북대산학협력단장상 수상</p>
+                    </div>
+                </div>
+
+                <!-- 4. 2024 구미 라면 축제 -->
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="2024 구미 라면 축제">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2024</span>
+                        <h3 class="project-title">구미 라면 축제</h3>
+                        <p class="project-desc">2024 구미 라면축제에서 AR 및 VR을 활용한 라면 관련 콘텐츠를 개발하여 [스마트 플레이 큐브존]을 운영</p>
+                    </div>
+                </div>
+
+                <!-- 5. 2024 저출생 리서치 워크숍 -->
+                <div class="project-card reveal">
+                    <div class="project-img">
+                        <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="2024 저출생 리서치 워크숍">
+                    </div>
+                    <div class="project-info">
+                        <span class="project-year">2024</span>
+                        <h3 class="project-title">저출생 리서치 워크숍</h3>
+                        <p class="project-desc">저출생 문제의 원인을 400여 장의 카드로 분석하고 핵심 이슈를 정리한 후 해결 방안을 도출하여 극복 전략을 제안</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-container">
+            <div class="contact-header reveal">
+                <span class="section-tag">Contact</span>
+                <h2 class="section-title">찾아오시는 길</h2>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info-card reveal">
+                    <div class="contact-item">
+                        <div class="contact-label">위치</div>
+                        <div class="contact-value">
+                            경상북도 구미시 대학로 61<br>
+                            국립금오공과대학교 글로벌관 544호
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">소속</div>
+                        <div class="contact-value">
+                            산업·빅데이터공학부 산업공학전공
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-label">안내</div>
+                        <div class="contact-value">
+                            푸름관 앞 이마트24 맞은편 글로벌관
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-map reveal">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1614.904876884697!2d128.38989137608814!3d36.14692679999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3565c70ae41c0e3d%3A0x9fabc527461cb791!2sKIT%20Global%20Bldg.!5e0!3m2!1sko!2skr!4v1737057288000!5m2!1sko!2skr"
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="../homeImg/01_kumoh_university_logo.png" alt="금오공과대학교">
+                <span>Service Design Lab</span>
+            </div>
+            <p>© 2024 국립금오공과대학교 서비스디자인연구실. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Scroll Reveal Animation
+        const reveals = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            reveals.forEach((el, index) => {
+                const top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 80) {
+                    setTimeout(() => {
+                        el.classList.add('active');
+                    }, index * 50);
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

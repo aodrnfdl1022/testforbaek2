@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>서비스디자인연구실 | KIT</title>
+
+  <!-- Fonts: Display(영문/타이틀) + Body(한글) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Pretendard (한글 바디를 더 세련되게) -->
+  <link rel="stylesheet" as="style" crossorigin
+        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable.css"/>
+
+  <style>
+    :root{
+      /* ===== Brand system (로고 분홍 기반) ===== */
+      --brand: #ff2d7d;      /* main pink */
+      --brand-2:#ff4ea3;     /* light pink */
+      --violet: #7c3aed;     /* premium accent */
+      --mint: #00d2b8;       /* fresh accent */
+      --ink: #0b0b12;        /* near-black */
+      --text: #1b1b25;
+      --muted: #616173;
+
+      --bg: #fbf7ff;         /* ultra light */
+      --panel: rgba(255,255,255,.78);
+      --line: rgba(20,20,35,.10);
+
+      --shadow-sm: 0 8px 24px rgba(20, 20, 40, .08);
+      --shadow-md: 0 18px 50px rgba(20, 20, 45, .12);
+      --shadow-lg: 0 30px 80px rgba(20, 20, 45, .16);
+
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+
+      --font-display: "Space Grotesk", system-ui, sans-serif;
+      --font-body: "Pretendard Variable","Noto Sans KR", system-ui, sans-serif;
+
+      --container: 1200px;
+      --pad-x: clamp(1.2rem, 4vw, 3.2rem);
+    }
+
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family: var(--font-body);
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 70% -10%, rgba(255,45,125,.22), transparent 55%),
+                  radial-gradient(1000px 700px at 5% 30%, rgba(124,58,237,.12), transparent 55%),
+                  radial-gradient(900px 600px at 85% 55%, rgba(0,210,184,.10), transparent 50%),
+                  var(--bg);
+      overflow-x:hidden;
+      line-height: 1.7;
+    }
+    ::selection{ background: rgba(255,45,125,.22); }
+
+    a{ color:inherit; }
+    img{ display:block; }
+
+    /* ===== Layout helpers ===== */
+    .container{
+      width: min(var(--container), calc(100% - (var(--pad-x) * 2)));
+      margin: 0 auto;
+    }
+    .section{
+      padding: clamp(4.5rem, 8vw, 7rem) 0;
+      position: relative;
+    }
+    .section::before{
+      content:"";
+      position:absolute;
+      inset: 0;
+      pointer-events:none;
+      opacity:.7;
+    }
+
+    /* ===== Nav (clean + glass + pill links) ===== */
+    nav{
+      position:fixed;
+      top: 14px;
+      left: 0; right:0;
+      z-index: 1000;
+      padding: 0 var(--pad-x);
+      pointer-events:none;
+    }
+    .nav-inner{
+      pointer-events:auto;
+      width: min(var(--container), calc(100% - (var(--pad-x) * 0)));
+      margin: 0 auto;
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+
+      border: 1px solid rgba(20,20,35,.10);
+      box-shadow: var(--shadow-sm);
+      border-radius: 999px;
+      padding: .75rem 1.05rem;
+    }
+
+    .nav-brand{
+      display:flex;
+      align-items:center;
+      gap: .85rem;
+      min-width: 240px;
+    }
+    .nav-brand img{
+      height: 28px;
+      width: auto;
+    }
+    .brand-text{
+      display:flex;
+      flex-direction:column;
+      line-height:1.1;
+    }
+    .brand-top{
+      font-size: .72rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: .2px;
+      opacity: .9;
+    }
+    .brand-main{
+      font-family: var(--font-display);
+      font-size: .92rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: var(--ink);
+    }
+
+    .nav-links{
+      list-style:none;
+      display:flex;
+      gap: .55rem;
+      align-items:center;
+      padding: .25rem;
+      border-radius: 999px;
+      background: rgba(20,20,35,.04);
+      border: 1px solid rgba(20,20,35,.06);
+    }
+    .nav-links a{
+      text-decoration:none;
+      font-family: var(--font-display);
+      font-size: .82rem;
+      font-weight: 700;
+      color: rgba(20,20,35,.70);
+      padding: .55rem .9rem;
+      border-radius: 999px;
+      transition: all .22s ease;
+      position:relative;
+    }
+    .nav-links a:hover{
+      color: var(--ink);
+      background: rgba(255,255,255,.7);
+      box-shadow: 0 10px 22px rgba(20,20,45,.08);
+      transform: translateY(-1px);
+    }
+    .nav-links a.active{
+      color: var(--ink);
+      background: linear-gradient(135deg, rgba(255,45,125,.18), rgba(124,58,237,.12));
+      border: 1px solid rgba(255,45,125,.22);
+    }
+
+    /* ===== Hero (split + premium headline + cards) ===== */
+    .hero{
+      padding-top: 110px;
+      padding-bottom: clamp(3rem, 6vw, 5rem);
+    }
+
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: clamp(1.6rem, 4vw, 3.2rem);
+      align-items:center;
+    }
+
+    .chip-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap: .5rem;
+      margin-bottom: 1.15rem;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding: .42rem .75rem;
+      border-radius: 999px;
+      font-size: .78rem;
+      font-weight: 700;
+      color: rgba(20,20,35,.72);
+      background: rgba(255,255,255,.70);
+      border: 1px solid rgba(20,20,35,.08);
+      box-shadow: 0 10px 22px rgba(20,20,45,.06);
+    }
+    .chip-dot{
+      width: 8px; height:8px;
+      border-radius:999px;
+      background: linear-gradient(135deg, var(--brand), var(--violet));
+      box-shadow: 0 0 0 4px rgba(255,45,125,.12);
+    }
+
+    .hero-title{
+      font-family: var(--font-display);
+      font-weight: 700;
+      letter-spacing: -2.8px;
+      line-height: .98;
+      font-size: clamp(3.1rem, 6.2vw, 5.4rem);
+      color: var(--ink);
+      margin-bottom: 1.1rem;
+    }
+    .hero-title .grad{
+      display:block;
+      background: linear-gradient(90deg, var(--brand), var(--violet), var(--mint));
+      background-size: 160% 160%;
+      /* background-clip 대응(크롬/사파리) */
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub{
+      font-size: clamp(1rem, 1.35vw, 1.15rem);
+      color: rgba(20,20,35,.72);
+      max-width: 56ch;
+      margin-bottom: 1.6rem;
+    }
+
+    .hero-actions{
+      display:flex;
+      gap: .8rem;
+      flex-wrap:wrap;
+      margin-bottom: 1.4rem;
+    }
+    .btn{
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .86rem;
+      letter-spacing: -0.2px;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      gap:.6rem;
+      padding: .95rem 1.2rem;
+      border-radius: 999px;
+      transition: transform .22s ease, box-shadow .22s ease, background .22s ease;
+      user-select:none;
+      will-change: transform;
+    }
+    .btn-primary{
+      color: #fff;
+      background: linear-gradient(135deg, var(--brand), var(--violet));
+      box-shadow: 0 18px 45px rgba(255,45,125,.22);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+    .btn-primary:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 26px 70px rgba(255,45,125,.28);
+    }
+    .btn-ghost{
+      color: var(--ink);
+      background: rgba(255,255,255,.65);
+      border: 1px solid rgba(20,20,35,.12);
+      box-shadow: 0 14px 32px rgba(20,20,45,.08);
+    }
+    .btn-ghost:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 24px 55px rgba(20,20,45,.12);
+    }
+    .btn svg{ width: 18px; height: 18px; }
+
+    /* Right hero cards */
+    .hero-side{
+      position:relative;
+    }
+    .hero-stack{
+      display:grid;
+      gap: .9rem;
+    }
+    .mini-card{
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(20,20,35,.10);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-md);
+      overflow:hidden;
+      position:relative;
+      transform: translateZ(0);
+    }
+    .mini-card::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      border-radius: inherit;
+      pointer-events:none;
+      background: radial-gradient(600px 140px at 20% 0%, rgba(255,45,125,.25), transparent 60%),
+                  radial-gradient(600px 140px at 80% 100%, rgba(124,58,237,.18), transparent 60%);
+      opacity:.75;
+      mix-blend-mode: multiply;
+    }
+    .mini-img{
+      height: 150px;
+      width: 100%;
+      object-fit: cover;
+      transform: scale(1.02);
+      filter: saturate(1.05) contrast(1.02);
+    }
+    .mini-meta{
+      padding: 1rem 1.1rem 1.1rem;
+      position:relative;
+      z-index:1;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+    }
+    .mini-title{
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      font-size: .95rem;
+      color: var(--ink);
+    }
+    .mini-tag{
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .72rem;
+      color: rgba(20,20,35,.70);
+      padding: .35rem .65rem;
+      border-radius: 999px;
+      background: rgba(20,20,35,.04);
+      border: 1px solid rgba(20,20,35,.08);
+      white-space:nowrap;
+    }
+
+    /* ===== Section header ===== */
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 1rem;
+      margin-bottom: clamp(2rem, 4vw, 3.2rem);
+    }
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:.55rem;
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .78rem;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: rgba(20,20,35,.64);
+    }
+    .kicker::before{
+      content:"";
+      width: 18px; height: 10px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--brand), var(--violet));
+      box-shadow: 0 0 0 5px rgba(255,45,125,.12);
+    }
+    .section-title{
+      font-family: var(--font-display);
+      font-weight: 800;
+      letter-spacing: -1.6px;
+      color: var(--ink);
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      line-height: 1.05;
+    }
+    .section-desc{
+      color: rgba(20,20,35,.62);
+      max-width: 58ch;
+      font-size: 1rem;
+      margin-top: .65rem;
+    }
+
+    /* ===== About (two-column + stats + professor glass card) ===== */
+    .about{
+      background:
+        radial-gradient(1000px 600px at 15% 10%, rgba(255,45,125,.10), transparent 55%),
+        rgba(255,255,255,.55);
+      border-top: 1px solid rgba(20,20,35,.08);
+      border-bottom: 1px solid rgba(20,20,35,.08);
+      backdrop-filter: blur(8px);
+    }
+
+    .about-grid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: clamp(1.6rem, 4vw, 3.2rem);
+      align-items: start;
+    }
+
+    .about-text{
+      font-size: 1.05rem;
+      color: rgba(20,20,35,.72);
+    }
+    .about-text strong{
+      color: var(--ink);
+      font-weight: 900;
+    }
+    .about-highlight{
+      display:inline-block;
+      font-weight: 900;
+      background: linear-gradient(90deg, rgba(255,45,125,.22), rgba(124,58,237,.14));
+      padding: 0 .35rem;
+      border-radius: .4rem;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: .8rem;
+      margin-top: 1.4rem;
+    }
+    .stat{
+      background: rgba(255,255,255,.70);
+      border: 1px solid rgba(20,20,35,.10);
+      border-radius: var(--radius-md);
+      padding: 1rem 1rem;
+      box-shadow: 0 14px 34px rgba(20,20,45,.08);
+    }
+    .stat b{
+      display:block;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      color: var(--ink);
+      margin-bottom: .15rem;
+    }
+    .stat span{
+      font-size: .84rem;
+      color: rgba(20,20,35,.62);
+      font-weight: 600;
+    }
+
+    .prof-card{
+      position:sticky;
+      top: 110px;
+      background: rgba(255,255,255,.70);
+      border: 1px solid rgba(20,20,35,.10);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow:hidden;
+    }
+    .prof-topbar{
+      height: 8px;
+      background: linear-gradient(90deg, var(--brand), var(--violet), var(--mint));
+    }
+    .prof-img{
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      object-position: top;
+      filter: saturate(1.02) contrast(1.03);
+    }
+    .prof-body{
+      padding: 1.35rem 1.35rem 1.45rem;
+      display:flex;
+      flex-direction:column;
+      gap: .65rem;
+    }
+    .prof-body h3{
+      font-family: var(--font-display);
+      font-weight: 900;
+      letter-spacing: -0.6px;
+      font-size: 1.18rem;
+      color: var(--ink);
+    }
+    .prof-body p{
+      color: rgba(20,20,35,.62);
+      font-size: .92rem;
+      font-weight: 600;
+    }
+    .prof-link{
+      margin-top: .35rem;
+      display:inline-flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: .6rem;
+      padding: .85rem 1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,45,125,.24);
+      background: linear-gradient(135deg, rgba(255,45,125,.10), rgba(124,58,237,.08));
+      text-decoration:none;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: .86rem;
+      color: var(--ink);
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .prof-link:hover{
+      transform: translateY(-2px);
+      box-shadow: 0 22px 50px rgba(255,45,125,.14);
+    }
+
+    /* ===== Projects (masonry-ish responsive cards) ===== */
+    .projects{
+      background:
+        radial-gradient(900px 600px at 90% 15%, rgba(124,58,237,.10), transparent 55%),
+        radial-gradient(900px 600px at 10% 85%, rgba(255,45,125,.10), transparent 55%),
+        transparent;
+    }
+
+    .projects-grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.1rem;
+    }
+
+    .proj{
+      grid-column: span 4;
+      background: rgba(255,255,255,.74);
+      border: 1px solid rgba(20,20,35,.10);
+      border-radius: var(--radius-lg);
+      overflow:hidden;
+      box-shadow: var(--shadow-md);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+      cursor:pointer;
+    }
+    .proj:hover{
+      transform: translateY(-6px);
+      box-shadow: 0 30px 80px rgba(20,20,45,.14);
+      border-color: rgba(255,45,125,.24);
+    }
+    /* 첫 카드 강조 */
+    .proj.feature{
+      grid-column: span 8;
+    }
+
+    .proj-media{
+      height: 230px;
+      position:relative;
+      overflow:hidden;
+    }
+    .proj.feature .proj-media{ height: 330px; }
+
+    .proj-media img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transform: scale(1.02);
+      transition: transform .55s ease;
+      filter: saturate(1.05) contrast(1.03);
+    }
+    .proj:hover .proj-media img{ transform: scale(1.07); }
+
+    .proj-media::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(20,20,35,.70) 100%);
+      opacity:.85;
+      pointer-events:none;
+    }
+
+    .proj-badge{
+      position:absolute;
+      left: 14px;
+      top: 14px;
+      z-index:2;
+      font-family: var(--font-display);
+      font-weight: 900;
+      font-size: .76rem;
+      color:#fff;
+      padding: .45rem .7rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(255,45,125,.92), rgba(124,58,237,.92));
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: 0 18px 35px rgba(255,45,125,.20);
+    }
+
+    .proj-body{
+      padding: 1.15rem 1.2rem 1.35rem;
+      display:flex;
+      flex-direction:column;
+      gap: .4rem;
+    }
+    .proj-title{
+      font-family: var(--font-display);
+      font-weight: 900;
+      letter-spacing: -0.7px;
+      color: var(--ink);
+      font-size: 1.08rem;
+    }
+    .proj-desc{
+      color: rgba(20,20,35,.66);
+      font-size: .95rem;
+      line-height: 1.65;
+    }
+
+    /* ===== Contact (card + map as rounded glass) ===== */
+    .contact{
+      background:
+        radial-gradient(900px 600px at 15% 10%, rgba(0,210,184,.10), transparent 55%),
+        rgba(255,255,255,.55);
+      border-top: 1px solid rgba(20,20,35,.08);
+    }
+
+    .contact-grid{
+      display:grid;
+      grid-template-columns: 420px 1fr;
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    .contact-card{
+      background: rgba(255,255,255,.76);
+      border: 1px solid rgba(20,20,35,.10);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      padding: 1.7rem;
+      position:relative;
+      overflow:hidden;
+    }
+    .contact-card::before{
+      content:"";
+      position:absolute;
+      inset: -1px;
+      border-radius: inherit;
+      pointer-events:none;
+      background:
+        radial-gradient(600px 300px at 30% 0%, rgba(255,45,125,.18), transparent 60%),
+        radial-gradient(600px 300px at 80% 100%, rgba(124,58,237,.12), transparent 60%);
+      opacity:.8;
+      mix-blend-mode:multiply;
+    }
+    .contact-item{
+      position:relative;
+      z-index:1;
+      padding: 1.05rem 0;
+      border-bottom: 1px solid rgba(20,20,35,.10);
+    }
+    .contact-item:last-child{ border-bottom:none; padding-bottom:0; }
+    .contact-item:first-child{ padding-top:0; }
+
+    .contact-label{
+      font-family: var(--font-display);
+      font-weight: 900;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      font-size: .72rem;
+      color: rgba(20,20,35,.60);
+      margin-bottom: .35rem;
+    }
+    .contact-value{
+      font-weight: 600;
+      color: rgba(20,20,35,.78);
+      line-height: 1.75;
+    }
+    .contact-map{
+      background: rgba(255,255,255,.72);
+      border: 1px solid rgba(20,20,35,.10);
+      border-radius: var(--radius-lg);
+      overflow:hidden;
+      box-shadow: var(--shadow-md);
+      min-height: 420px;
+    }
+    .contact-map iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      filter: grayscale(90%) contrast(1.02);
+      transition: filter .35s ease;
+    }
+    .contact-map:hover iframe{
+      filter: grayscale(0%) contrast(1.02);
+    }
+
+    /* ===== Footer ===== */
+    footer{
+      padding: 1.8rem var(--pad-x);
+      border-top: 1px solid rgba(20,20,35,.08);
+      background: rgba(255,255,255,.55);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .footer-inner{
+      width: min(var(--container), calc(100% - (var(--pad-x) * 2)));
+      margin: 0 auto;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 1rem;
+      flex-wrap:wrap;
+    }
+    .footer-brand{
+      display:flex;
+      align-items:center;
+      gap: .75rem;
+    }
+    .footer-brand img{ height: 22px; width:auto; }
+    .footer-brand span{
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: .92rem;
+      letter-spacing: -0.4px;
+      color: var(--ink);
+    }
+    footer p{
+      color: rgba(20,20,35,.55);
+      font-size: .82rem;
+      font-weight: 600;
+    }
+
+    /* ===== Reveal (IntersectionObserver) ===== */
+    .reveal{
+      opacity:0;
+      transform: translateY(18px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.active{
+      opacity:1;
+      transform: translateY(0);
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1024px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .prof-card{ position:relative; top:auto; }
+      .about-grid{ grid-template-columns: 1fr; }
+      .contact-grid{ grid-template-columns: 1fr; }
+      .proj{ grid-column: span 6; }
+      .proj.feature{ grid-column: span 12; }
+      .nav-brand{ min-width: unset; }
+    }
+    @media (max-width: 720px){
+      nav{ top: 10px; }
+      .nav-links{ display:none; } /* 필요하면 햄버거 추가해줄게 */
+      .nav-inner{ border-radius: 18px; padding: .75rem .9rem; }
+      .hero{ padding-top: 96px; }
+
+      .stats{ grid-template-columns: 1fr; }
+      .proj{ grid-column: span 12; }
+      .proj.feature .proj-media{ height: 240px; }
+      .proj-media{ height: 220px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a class="nav-brand" href="#home" style="text-decoration:none;">
+        <img src="../homeImg/01_kumoh_university_logo.png" alt="금오공과대학교">
+        <div class="brand-text">
+          <span class="brand-top">Kumoh National Institute of Technology</span>
+          <span class="brand-main">Service Design Lab</span>
+        </div>
+      </a>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-a">Home</a></li>
+        <li><a href="#about" class="nav-a">About</a></li>
+        <li><a href="#projects" class="nav-a">Projects</a></li>
+        <li><a href="#contact" class="nav-a">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <header class="section hero" id="home">
+    <div class="container hero-grid">
+      <div class="hero-left reveal">
+        <div class="chip-row">
+          <span class="chip"><span class="chip-dot"></span>국립금오공과대학교</span>
+          <span class="chip">산업·빅데이터공학부 · 산업공학전공</span>
+          <span class="chip">서비스디자인연구실</span>
+        </div>
+
+        <h1 class="hero-title">
+          We Design
+          <span class="grad">the Invisible.</span>
+        </h1>
+
+        <p class="hero-sub">
+          사용자 관점에서 서비스 경험을 구조화하고, 이해관계자 협력을 통해
+          <span class="about-highlight">현실의 문제를 “설계”로 해결</span>합니다.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+            </svg>
+            Go to Project
+          </a>
+          <a href="#about" class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+              <circle cx="12" cy="7" r="4"/>
+            </svg>
+            Professor Profile
+          </a>
+        </div>
+      </div>
+
+      <aside class="hero-side reveal">
+        <div class="hero-stack">
+          <div class="mini-card">
+            <img class="mini-img" src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="2025 Women Forum">
+            <div class="mini-meta">
+              <div class="mini-title">2025 Women Forum</div>
+              <div class="mini-tag">Qualitative Research</div>
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <img class="mini-img" src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="Policy Design">
+            <div class="mini-meta">
+              <div class="mini-title">Policy Design</div>
+              <div class="mini-tag">Co-creation</div>
+            </div>
+          </div>
+
+          <div class="mini-card">
+            <img class="mini-img" src="../homeImg/03_2024_gumi_ramen_festival.png" alt="Ramen Festival">
+            <div class="mini-meta">
+              <div class="mini-title">Ramen Festival</div>
+              <div class="mini-tag">AR / VR</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </header>
+
+  <!-- About -->
+  <section class="section about" id="about">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="kicker">About Lab</div>
+          <h2 class="section-title">서비스 경험을 “구조”로 설계합니다.</h2>
+          <p class="section-desc">
+            이론과 실무를 결합해, 더 나은 경험과 즐거움을 만드는 서비스를 연구합니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="about-grid">
+        <div class="reveal">
+          <p class="about-text">
+            <strong>국립금오공과대학교 산업·빅데이터공학부 산업공학전공</strong> 소속
+            <strong class="about-highlight">서비스디자인연구실</strong>은 사용자의 관점에서 서비스 제공 과정을
+            체계적으로 설계하고, 다양한 이해관계자와의 협력을 통해 문제를 풀기 위해 노력하고 있습니다.
+            <br><br>
+            우리 연구실은 이론과 실무를 접목하여 사람들에게 더 나은 경험과 즐거움을 선사할 수 있는
+            서비스를 만들어가는 데 집중하고 있습니다.
+          </p>
+
+          <!-- 내용 바꾸기 싫으면 숫자/라벨만 대충 유지해도 됨 -->
+          <div class="stats">
+            <div class="stat"><b>Service</b><span>Experience Design</span></div>
+            <div class="stat"><b>Research</b><span>Qual + Data</span></div>
+            <div class="stat"><b>Collab</b><span>Stakeholders</span></div>
+          </div>
+        </div>
+
+        <div class="prof-card reveal">
+          <div class="prof-topbar"></div>
+          <img src="../homeImg/02_professor_profile.png" alt="교수님" class="prof-img">
+          <div class="prof-body">
+            <h3>Professor Profile</h3>
+            <p>서비스디자인연구실 지도교수</p>
+            <a href="#" class="prof-link">
+              View More
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section class="section projects" id="projects">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="kicker">Recent Works</div>
+          <h2 class="section-title">Recent Project</h2>
+          <p class="section-desc">최근 프로젝트를 카드형 아카이브로 정리했습니다.</p>
+        </div>
+      </div>
+
+      <div class="projects-grid">
+        <article class="proj feature reveal">
+          <div class="proj-media">
+            <span class="proj-badge">2025</span>
+            <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="2025 구미 2030 여성 포럼">
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">구미 2030 여성 포럼</h3>
+            <p class="proj-desc">구미 2030 청년 여성들의 직접 참여와 소분과 모임 등을 통해 정책 수요자의 의견과 요구를 정성적으로 도출하여 청년 여성 정책 개발에 활용</p>
+          </div>
+        </article>
+
+        <article class="proj reveal">
+          <div class="proj-media">
+            <span class="proj-badge">2024</span>
+            <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="2024 구미 시민정책디자인단">
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">구미 시민정책디자인단</h3>
+            <p class="proj-desc">구미시의 저출생 극복을 위해 시민과 서비스 디자이너가 협력하여, 청년의 연애·결혼 포기와 경력 단절 문제를 중심으로 정책을 제안</p>
+          </div>
+        </article>
+
+        <article class="proj reveal">
+          <div class="proj-media">
+            <span class="proj-badge">2024</span>
+            <img src="../homeImg/06_2024_metaverse_floorviz.png" alt="2024 동북권 메타버스 창작자 경진대회">
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">동북권 메타버스 창작자 경진대회</h3>
+            <p class="proj-desc">공간 컴퓨팅 기반 공장 설비 가상 배치 서비스인 플로어비즈(FloorViz)를 개발 및 경북대산학협력단장상 수상</p>
+          </div>
+        </article>
+
+        <article class="proj reveal">
+          <div class="proj-media">
+            <span class="proj-badge">2024</span>
+            <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="2024 구미 라면 축제">
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">구미 라면 축제</h3>
+            <p class="proj-desc">2024 구미 라면축제에서 AR 및 VR을 활용한 라면 관련 콘텐츠를 개발하여 [스마트 플레이 큐브존]을 운영</p>
+          </div>
+        </article>
+
+        <article class="proj reveal">
+          <div class="proj-media">
+            <span class="proj-badge">2024</span>
+            <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="2024 저출생 리서치 워크숍">
+          </div>
+          <div class="proj-body">
+            <h3 class="proj-title">저출생 리서치 워크숍</h3>
+            <p class="proj-desc">저출생 문제의 원인을 400여 장의 카드로 분석하고 핵심 이슈를 정리한 후 해결 방안을 도출하여 극복 전략을 제안</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section class="section contact" id="contact">
+    <div class="container">
+      <div class="section-head reveal">
+        <div>
+          <div class="kicker">Contact</div>
+          <h2 class="section-title">찾아오시는 길</h2>
+          <p class="section-desc">방문 안내 및 위치 정보입니다.</p>
+        </div>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-card reveal">
+          <div class="contact-item">
+            <div class="contact-label">Address</div>
+            <div class="contact-value">
+              경상북도 구미시 대학로 61<br>
+              국립금오공과대학교 글로벌관 544호
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Department</div>
+            <div class="contact-value">
+              산업·빅데이터공학부 산업공학전공
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-label">Guide</div>
+            <div class="contact-value">
+              푸름관 앞 이마트24 맞은편 글로벌관
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-map reveal">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1614.904876884697!2d128.38989137608814!3d36.14692679999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3565c70ae41c0e3d%3A0x9fabc527461cb791!2sKIT%20Global%20Bldg.!5e0!3m2!1sko!2skr!4v1737057288000!5m2!1sko!2skr"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../homeImg/01_kumoh_university_logo.png" alt="금오공과대학교">
+        <span>Service Design Lab</span>
+      </div>
+      <p>© 2024 국립금오공과대학교 서비스디자인연구실. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal (IntersectionObserver)
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach((el) => io.observe(el));
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        const target = document.querySelector(id);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Active nav highlight on scroll
+    const navAnchors = document.querySelectorAll('.nav-a');
+    const sections = [...navAnchors].map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navAnchors.forEach(a => a.classList.remove('active'));
+        const active = document.querySelector(`.nav-a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      });
+    }, { rootMargin: "-45% 0px -50% 0px", threshold: 0.01 });
+
+    sections.forEach(sec => spy.observe(sec));
+  </script>
+</body>
+</html>

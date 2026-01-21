@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>서비스디자인연구실 | KIT - Version 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF2D55;
+            --secondary: #5856D6;
+            --accent: #FF9500;
+            --dark: #1C1C1E;
+            --darker: #000000;
+            --light: #F2F2F7;
+            --white: #FFFFFF;
+            --gray: #8E8E93;
+            --gradient-1: linear-gradient(135deg, #FF2D55 0%, #FF9500 100%);
+            --gradient-2: linear-gradient(135deg, #5856D6 0%, #FF2D55 100%);
+            --gradient-3: linear-gradient(135deg, #000000 0%, #434343 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans KR', sans-serif;
+            background: var(--darker);
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* DARK MODE NAVIGATION - Minimal & Floating */
+        nav {
+            position: fixed;
+            top: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(28, 28, 30, 0.8);
+            backdrop-filter: blur(20px);
+            border-radius: 100px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        nav:hover {
+            background: rgba(28, 28, 30, 0.95);
+            border-color: rgba(255, 45, 85, 0.3);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo img {
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--white);
+            font-style: italic;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--white);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        /* HERO - Full Screen Split with Magazine Style */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            background: var(--darker);
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 50%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, 
+                transparent 0%,
+                rgba(255, 45, 85, 0.3) 50%,
+                transparent 100%
+            );
+        }
+
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 8rem 8%;
+            position: relative;
+        }
+
+        .hero-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 15rem;
+            font-weight: 900;
+            position: absolute;
+            top: 0;
+            left: 0;
+            color: transparent;
+            -webkit-text-stroke: 1px rgba(255, 45, 85, 0.2);
+            z-index: 0;
+            line-height: 0.8;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-tag::before {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background: var(--primary);
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 7vw, 7rem);
+            font-weight: 900;
+            line-height: 0.95;
+            margin-bottom: 2rem;
+            letter-spacing: -3px;
+        }
+
+        .hero-title .highlight {
+    /* Fallback (no gradient-text support) */
+    color: var(--primary);
+    display: block;
+    font-style: italic;
+
+    /* Gradient paint (will be clipped in @supports block below) */
+    background-image: var(--gradient-1);
+}
+
+/* Apply gradient text only where supported */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .hero-title .highlight {
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        -webkit-text-fill-color: transparent; /* Safari */
+    }
+}
+
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--gray);
+            line-height: 1.8;
+            max-width: 500px;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            padding: 1.3rem 3rem;
+            background: var(--white);
+            color: var(--darker);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 700;
+            border-radius: 0;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            transition: left 0.4s ease;
+        }
+
+        .btn-primary span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary:hover::before {
+            left: 0;
+        }
+
+        .btn-primary:hover span {
+            color: var(--white);
+        }
+
+        .btn-secondary {
+            padding: 1.3rem 3rem;
+            background: transparent;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* HERO RIGHT - Bento Grid of Images */
+        .hero-right {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 1rem;
+            padding: 2rem;
+            background: var(--dark);
+        }
+
+        .hero-img {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hero-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, 
+                rgba(255, 45, 85, 0.6) 0%,
+                rgba(88, 86, 214, 0.6) 100%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+
+        .hero-img:hover::before {
+            opacity: 1;
+        }
+
+        .hero-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: grayscale(100%);
+        }
+
+        .hero-img:hover img {
+            transform: scale(1.1);
+            filter: grayscale(0%);
+        }
+
+        .hero-img-1 {
+            grid-column: 1 / 3;
+            grid-row: 1 / 2;
+        }
+
+        .hero-img-2 {
+            grid-column: 1 / 2;
+            grid-row: 2 / 4;
+        }
+
+        .hero-img-3 {
+            grid-column: 2 / 3;
+            grid-row: 2 / 4;
+        }
+
+        /* KEYWORD BAR - Ticker Style */
+        .keyword-bar {
+            background: var(--primary);
+            padding: 1.5rem 0;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .keyword-bar-content {
+            display: flex;
+            animation: scroll 30s linear infinite;
+            white-space: nowrap;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .keyword-item {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--white);
+            margin: 0 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* ABOUT - Side by Side Editorial */
+        .about {
+            padding: 10rem 8%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            background: var(--darker);
+            align-items: center;
+        }
+
+        .about-image {
+            position: relative;
+            height: 600px;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            left: -30px;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-2);
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: relative;
+            z-index: 1;
+            filter: grayscale(100%) contrast(1.2);
+            transition: all 0.5s ease;
+        }
+
+        .about-image:hover img {
+            filter: grayscale(0%) contrast(1);
+        }
+
+        .about-content {
+            padding-left: 3rem;
+        }
+
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+        }
+
+        .about-text {
+            font-size: 1rem;
+            color: var(--gray);
+            line-height: 2;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .about-keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .keyword {
+            padding: 0.8rem 1.5rem;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: var(--white);
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .keyword:hover {
+            background: var(--white);
+            color: var(--darker);
+            border-color: var(--white);
+        }
+
+        /* PROJECTS - Masonry Grid */
+        .projects {
+            padding: 10rem 4%;
+            background: var(--dark);
+        }
+
+        .projects-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 5rem;
+            padding: 0 4%;
+        }
+
+        .projects-header .section-label {
+            margin-bottom: 1rem;
+        }
+
+        .projects-header .section-title {
+            margin-bottom: 0;
+        }
+
+        .view-all {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .view-all:hover {
+            color: var(--primary);
+            transform: translateX(10px);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            padding: 0 4%;
+        }
+
+        .project-card {
+            position: relative;
+            background: var(--darker);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+
+        .project-card:nth-child(1),
+        .project-card:nth-child(4) {
+            grid-column: span 2;
+        }
+
+        .project-img {
+            width: 100%;
+            aspect-ratio: 16/10;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-card:nth-child(1) .project-img,
+        .project-card:nth-child(4) .project-img {
+            aspect-ratio: 21/9;
+        }
+
+        .project-img::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+            mix-blend-mode: multiply;
+        }
+
+        .project-card:hover .project-img::before {
+            opacity: 0.7;
+        }
+
+        .project-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: all 0.6s ease;
+        }
+
+        .project-card:hover .project-img img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .project-content {
+            padding: 2rem;
+        }
+
+        .project-year {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .project-desc {
+            font-size: 0.9rem;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* LOCATION - Dark Split */
+        .location {
+            padding: 10rem 8%;
+            background: var(--darker);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: start;
+        }
+
+        .location-map {
+            height: 500px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .location-map::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gradient-1);
+            opacity: 0.2;
+            z-index: 1;
+            mix-blend-mode: multiply;
+        }
+
+        .location-map img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%) contrast(1.2);
+        }
+
+        .location-info {
+            padding-top: 2rem;
+        }
+
+        .location-item {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .location-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .location-icon svg {
+            width: 28px;
+            height: 28px;
+            stroke: var(--white);
+        }
+
+        .location-text h4 {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .location-text p {
+            font-size: 1rem;
+            color: var(--white);
+            line-height: 1.8;
+        }
+
+        /* FOOTER - Minimal Dark */
+        footer {
+            background: var(--darker);
+            padding: 3rem 8%;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-logo img {
+            height: 28px;
+            filter: brightness(0) invert(1);
+        }
+
+        .footer-logo span {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--white);
+            font-style: italic;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* ANIMATIONS */
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Magnetic Button Effect */
+        .btn-primary, .btn-secondary {
+            position: relative;
+            transition: transform 0.1s ease;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+
+            .hero::before {
+                display: none;
+            }
+
+            .hero-left {
+                padding: 6rem 5%;
+            }
+
+            .hero-right {
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(3, 300px);
+            }
+
+            .hero-img-1,
+            .hero-img-2,
+            .hero-img-3 {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+                padding: 6rem 5%;
+            }
+
+            .about-content {
+                padding-left: 0;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .project-card:nth-child(1),
+            .project-card:nth-child(4) {
+                grid-column: span 1;
+            }
+
+            .location {
+                grid-template-columns: 1fr;
+                padding: 6rem 5%;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                top: 1rem;
+                padding: 0.8rem 1.5rem;
+                gap: 2rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .hero-number {
+                font-size: 8rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <img src="../homeImg/01_kumoh_university_logo.png" alt="KIT">
+            <span class="logo-text">Service Design Lab</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-left">
+            <div class="hero-number">01</div>
+            <div class="hero-content">
+                <div class="hero-tag">
+                    Kumoh National Institute of Technology
+                </div>
+                <h1 class="hero-title">
+                    Design<br>
+                    <span class="highlight">the Future</span>
+                </h1>
+                <p class="hero-desc">
+                    서비스디자인연구실은 사용자 중심의 혁신적인 경험을 설계합니다.
+                    이론과 실무의 경계를 넘어 더 나은 미래를 창조합니다.
+                </p>
+                <div class="hero-cta">
+                    <a href="#projects" class="btn-primary">
+                        <span>VIEW PROJECTS</span>
+                    </a>
+                    <a href="#about" class="btn-secondary">LEARN MORE</a>
+                </div>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="hero-img hero-img-1">
+                <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="라면축제">
+            </div>
+            <div class="hero-img hero-img-2">
+                <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="워크숍">
+            </div>
+            <div class="hero-img hero-img-3">
+                <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="포럼">
+            </div>
+        </div>
+    </section>
+
+    <!-- Keyword Bar -->
+    <div class="keyword-bar">
+        <div class="keyword-bar-content">
+            <span class="keyword-item">Service Design</span>
+            <span class="keyword-item">UX Research</span>
+            <span class="keyword-item">Policy Design</span>
+            <span class="keyword-item">Metaverse</span>
+            <span class="keyword-item">AR/VR Experience</span>
+            <span class="keyword-item">Design Thinking</span>
+            <!-- Duplicate for seamless loop -->
+            <span class="keyword-item">Service Design</span>
+            <span class="keyword-item">UX Research</span>
+            <span class="keyword-item">Policy Design</span>
+            <span class="keyword-item">Metaverse</span>
+            <span class="keyword-item">AR/VR Experience</span>
+            <span class="keyword-item">Design Thinking</span>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-image reveal">
+            <img src="../homeImg/02_professor_profile.png" alt="교수님">
+        </div>
+        <div class="about-content reveal">
+            <div class="section-label">About Laboratory</div>
+            <h2 class="section-title">
+                사용자 경험의<br>
+                새로운 차원
+            </h2>
+            <p class="about-text">
+                우리는 사용자의 관점에서 서비스 제공 과정을 체계적으로 설계하고,
+                다양한 이해관계자와의 협력을 통해 복잡한 문제를 해결합니다.
+                <br><br>
+                이론적 깊이와 실무적 통찰을 결합하여, 사람들에게 더 나은 경험과 
+                진정한 가치를 제공하는 서비스를 창조합니다.
+            </p>
+            <div class="about-keywords">
+                <span class="keyword">Service Design</span>
+                <span class="keyword">UX/UI</span>
+                <span class="keyword">Policy Design</span>
+                <span class="keyword">Metaverse</span>
+                <span class="keyword">AR/VR</span>
+                <span class="keyword">Design Thinking</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="projects" id="projects">
+        <div class="projects-header">
+            <div>
+                <div class="section-label">Recent Works</div>
+                <h2 class="section-title">Selected<br>Projects</h2>
+            </div>
+            <a href="#" class="view-all">
+                View All →
+            </a>
+        </div>
+
+        <div class="projects-grid">
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/03_2024_gumi_ramen_festival.png" alt="구미 라면 축제">
+                </div>
+                <div class="project-content">
+                    <div class="project-year">2024</div>
+                    <h3 class="project-title">구미 라면 축제</h3>
+                    <p class="project-desc">AR/VR을 활용한 스마트 플레이 큐브존 운영</p>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/04_2024_low_birthrate_research_workshop.png" alt="저출생 리서치 워크숍">
+                </div>
+                <div class="project-content">
+                    <div class="project-year">2024</div>
+                    <h3 class="project-title">저출생 리서치</h3>
+                    <p class="project-desc">400여 장의 카드를 활용한 문제 분석</p>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/05_2024_gumi_citizen_policy_design.png" alt="시민정책디자인단">
+                </div>
+                <div class="project-content">
+                    <div class="project-year">2024</div>
+                    <h3 class="project-title">시민정책디자인</h3>
+                    <p class="project-desc">시민 참여형 정책 디자인</p>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/06_2024_metaverse_floorviz.png" alt="메타버스 경진대회">
+                </div>
+                <div class="project-content">
+                    <div class="project-year">2024</div>
+                    <h3 class="project-title">FloorViz</h3>
+                    <p class="project-desc">공간 컴퓨팅 기반 가상 배치 서비스</p>
+                </div>
+            </div>
+
+            <div class="project-card reveal">
+                <div class="project-img">
+                    <img src="../homeImg/07_2025_gumi_2030_women_forum.png" alt="여성 포럼">
+                </div>
+                <div class="project-content">
+                    <div class="project-year">2025</div>
+                    <h3 class="project-title">2030 여성 포럼</h3>
+                    <p class="project-desc">청년 여성 정책 개발 워크숍</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="location" id="contact">
+        <div class="location-map reveal">
+            <img src="../homeImg/08_location_map.png" alt="찾아오시는 길">
+        </div>
+        <div class="location-info reveal">
+            <div class="section-label">Contact</div>
+            <h2 class="section-title">Visit Us</h2>
+
+            <div class="location-item">
+                <div class="location-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <div class="location-text">
+                    <h4>Address</h4>
+                    <p>경상북도 구미시 대학로 61<br>국립금오공과대학교 글로벌관 543~544호</p>
+                </div>
+            </div>
+
+            <div class="location-item">
+                <div class="location-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                    </svg>
+                </div>
+                <div class="location-text">
+                    <h4>Department</h4>
+                    <p>산업·빅데이터공학부 산업공학전공</p>
+                </div>
+            </div>
+
+            <div class="location-item">
+                <div class="location-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <div class="location-text">
+                    <h4>Guide</h4>
+                    <p>푸름관 앞 이마트24 맞은편 글로벌관</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">
+            <img src="../homeImg/01_kumoh_university_logo.png" alt="KIT">
+            <span>Service Design Lab</span>
+        </div>
+        <p>© 2026 Kumoh National Institute of Technology. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Scroll Reveal Animation
+        const reveals = document.querySelectorAll('.reveal');
+        
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        reveals.forEach(reveal => {
+            revealObserver.observe(reveal);
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Magnetic button effect
+        const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
+        
+        buttons.forEach(button => {
+            button.addEventListener('mousemove', (e) => {
+                const rect = button.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width / 2;
+                const y = e.clientY - rect.top - rect.height / 2;
+                
+                button.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
+            });
+            
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'translate(0, 0)';
+            });
+        });
+
+        // Parallax effect on hero number
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroNumber = document.querySelector('.hero-number');
+            if (heroNumber) {
+                heroNumber.style.transform = `translateY(${scrolled * 0.5}px)`;
+            }
+        });
+
+        console.log('%c🎨 Service Design Lab V2', 'font-size: 24px; font-weight: bold; color: #FF2D55;');
+        console.log('%cDark Mode Editorial Design', 'font-size: 14px; color: #8E8E93;');
+    </script>
+</body>
+</html>
